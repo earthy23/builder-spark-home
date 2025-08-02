@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Friends from "./pages/Friends";
+import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 import PlaceholderPage from "./components/PlaceholderPage";
 
