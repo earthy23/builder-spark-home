@@ -52,7 +52,7 @@ const App = () => (
 
           {/* Community */}
           <Route path="/news" element={<News />} />
-          <Route path="/events" element={<PlaceholderPage title="Events" description="Upcoming events, tournaments, and community activities." />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/partners" element={<PlaceholderPage title="Partners" description="Our trusted partners and sponsors." />} />
           <Route path="/forums" element={<PlaceholderPage title="Forums" description="Community discussions, topics, and user-generated content." />} />
 
