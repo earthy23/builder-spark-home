@@ -213,9 +213,13 @@ export default function Login() {
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-blue-600/10 border border-blue-600/30 rounded-lg">
             <h3 className="text-sm font-semibold text-blue-400 mb-2">Demo Access</h3>
-            <p className="text-xs text-gray-400 mb-2">For demonstration purposes, use any email and password to log in.</p>
-            <div className="text-xs text-gray-500">
-              <div>Email: demo@uec.com</div>
+            <p className="text-xs text-gray-400 mb-2">For demonstration purposes:</p>
+            <div className="text-xs text-gray-500 space-y-1">
+              <div><strong>Admin Account:</strong></div>
+              <div>Username: admin</div>
+              <div>Password: admin123</div>
+              <div className="mt-2"><strong>Regular User:</strong></div>
+              <div>Username: steve_builder</div>
               <div>Password: demo123</div>
             </div>
           </div>
