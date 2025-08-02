@@ -69,16 +69,30 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
-    setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Simulate successful registration
-    navigate('/dashboard');
+
+    try {
+      const success = await register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (success) {
+        navigate('/dashboard');
+      } else {
+        setErrors({
+          username: "Username or email already exists",
+          email: "Username or email already exists"
+        });
+      }
+    } catch (error) {
+      setErrors({
+        username: "Registration failed. Please try again.",
+        email: "Registration failed. Please try again."
+      });
+    }
   };
 
   return (
