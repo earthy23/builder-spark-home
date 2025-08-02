@@ -62,10 +62,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <Layout>
+    <Layout showSidebar={false}>
       <div className="min-h-screen flex">
-          {/* Admin Sidebar - Fixed with independent scrolling */}
-          <div className="w-72 bg-red-950/20 border-r border-red-800/30 h-screen fixed left-0 top-0 z-30">
+          {/* Admin Sidebar - Fixed with higher z-index */}
+          <div className="w-72 bg-red-950/20 border-r border-red-800/30 h-screen fixed left-0 top-16 z-[60] backdrop-blur-md">
             <div className="p-6 border-b border-red-800/30">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               </div>
             </div>
 
-            <nav className="p-4 h-[calc(100vh-120px)] overflow-y-auto">
+            <nav className="p-4 h-[calc(100vh-200px)] overflow-y-auto">
               <ul className="space-y-2">
                 {adminNavItems.map((item) => (
                   <li key={item.href}>
@@ -104,7 +104,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
 
           {/* Admin Content - Offset by sidebar width with independent scrolling */}
-          <div className="flex-1 ml-72 h-screen overflow-y-auto">
+          <div className="flex-1 ml-72 min-h-screen">
             {children}
           </div>
       </div>
