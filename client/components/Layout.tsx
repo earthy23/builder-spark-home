@@ -302,6 +302,9 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
         isOpen={notificationsOpen}
         onClose={() => setNotificationsOpen(false)}
       />
+
+      {/* Quick Actions (only show if logged in) */}
+      {isLoggedIn && <QuickActions />}
     </div>
   );
 }
