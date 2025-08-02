@@ -13,6 +13,7 @@ import Chat from "./pages/Chat";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ChatModeration from "./pages/admin/ChatModeration";
 import UserManagement from "./pages/admin/UserManagement";
+import TicketManagement from "./pages/admin/TicketManagement";
 import NotFound from "./pages/NotFound";
 import PlaceholderPage from "./components/PlaceholderPage";
 
