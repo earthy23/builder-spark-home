@@ -1,8 +1,23 @@
 import { useState, useEffect } from "react";
-import { ExternalLink, Play, Info, Star, Clock, Users } from "lucide-react";
+import { 
+  Play, 
+  Info, 
+  Star, 
+  Clock, 
+  Users, 
+  ChevronDown, 
+  ExternalLink,
+  Settings,
+  Gamepad2,
+  Download,
+  Globe,
+  Activity,
+  Zap
+} from "lucide-react";
 import Layout from "@/components/Layout";
 
 interface EaglercraftClient {
+  id: string;
   name: string;
   displayName: string;
   description: string;
@@ -10,94 +25,100 @@ interface EaglercraftClient {
   playerCount: number;
   featured: boolean;
   lastPlayed?: string;
+  status: 'online' | 'maintenance' | 'offline';
+  category: 'classic' | 'modded' | 'creative' | 'beta';
 }
 
 // Mock data - this would come from scanning /client/ directory
 const mockClients: EaglercraftClient[] = [
   {
+    id: "1.5.2",
     name: "1.5.2",
     displayName: "Eaglercraft 1.5.2",
     description: "Classic Minecraft experience with the original Alpha/Beta feel. Perfect for nostalgic gameplay.",
     version: "1.5.2",
     playerCount: 127,
     featured: true,
-    lastPlayed: "2024-01-15T10:30:00Z"
+    lastPlayed: "2024-01-15T10:30:00Z",
+    status: 'online',
+    category: 'classic'
   },
   {
+    id: "vanilla",
     name: "vanilla",
     displayName: "Vanilla Eaglercraft",
     description: "Pure vanilla Minecraft experience without any modifications. The authentic way to play.",
     version: "1.8.8",
     playerCount: 89,
     featured: true,
+    status: 'online',
+    category: 'classic'
   },
   {
+    id: "1.8.8-optifine",
     name: "1.8.8-optifine",
     displayName: "Eaglercraft 1.8.8 + OptiFine",
     description: "Enhanced graphics and performance with OptiFine. Includes shaders support and better FPS.",
     version: "1.8.8",
     playerCount: 156,
     featured: false,
-    lastPlayed: "2024-01-14T15:45:00Z"
+    lastPlayed: "2024-01-14T15:45:00Z",
+    status: 'online',
+    category: 'modded'
   },
   {
+    id: "beta-1.7.3",
     name: "beta-1.7.3",
     displayName: "Beta 1.7.3",
     description: "Experience Minecraft as it was in the early days. Includes the nostalgic terrain generator.",
     version: "β1.7.3",
     playerCount: 34,
     featured: false,
+    status: 'online',
+    category: 'beta'
   },
   {
+    id: "creative-mode",
     name: "creative-mode",
     displayName: "Creative Mode",
     description: "Unlimited blocks and instant building. Perfect for creating massive structures and projects.",
     version: "1.8.8",
     playerCount: 78,
     featured: false,
+    status: 'online',
+    category: 'creative'
   }
 ];
 
 export default function Dashboard() {
   const [clients, setClients] = useState<EaglercraftClient[]>([]);
+  const [selectedClient, setSelectedClient] = useState<EaglercraftClient | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState<'name' | 'players' | 'recent'>('players');
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
 
   useEffect(() => {
     // Simulate loading clients from /client/ directory
     const loadClients = async () => {
       setLoading(true);
-      // In real implementation, this would scan the /client/ directory
       await new Promise(resolve => setTimeout(resolve, 1000));
       setClients(mockClients);
+      setSelectedClient(mockClients[0]); // Select first client by default
       setLoading(false);
     };
 
     loadClients();
   }, []);
 
-  const sortedClients = [...clients].sort((a, b) => {
-    switch (sortBy) {
-      case 'name':
-        return a.displayName.localeCompare(b.displayName);
-      case 'players':
-        return b.playerCount - a.playerCount;
-      case 'recent':
-        if (!a.lastPlayed && !b.lastPlayed) return 0;
-        if (!a.lastPlayed) return 1;
-        if (!b.lastPlayed) return -1;
-        return new Date(b.lastPlayed).getTime() - new Date(a.lastPlayed).getTime();
-      default:
-        return 0;
-    }
-  });
-
-  const featuredClients = sortedClients.filter(client => client.featured);
-  const otherClients = sortedClients.filter(client => !client.featured);
-
-  const handleLaunchClient = (clientName: string) => {
+  const handleLaunchClient = (client: EaglercraftClient) => {
+    setCurrentlyPlaying(client.id);
     // Open client in new tab
-    window.open(`/client/${clientName}/index.html`, '_blank');
+    window.open(`/client/${client.name}/index.html`, '_blank');
+    
+    // Simulate launching
+    setTimeout(() => {
+      setCurrentlyPlaying(null);
+    }, 3000);
   };
 
   const formatLastPlayed = (dateString: string) => {
@@ -113,207 +134,331 @@ export default function Dashboard() {
     return date.toLocaleDateString();
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'online': return 'bg-green-500';
+      case 'maintenance': return 'bg-yellow-500';
+      case 'offline': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'classic': return <Globe className="w-4 h-4" />;
+      case 'modded': return <Zap className="w-4 h-4" />;
+      case 'creative': return <Settings className="w-4 h-4" />;
+      case 'beta': return <Activity className="w-4 h-4" />;
+      default: return <Gamepad2 className="w-4 h-4" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin w-12 h-12 border-2 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
+            <p className="text-gray-300 text-lg">Loading your game dashboard...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <div className="min-h-screen">
-        {/* Header */}
-        <div className="section py-8 border-b border-gray-800" data-ui-section="dashboard-header">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+        {/* App Header */}
+        <div className="sticky top-16 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">Game Launcher</h1>
-                <p className="text-gray-300">Choose your Eaglercraft client and start playing instantly</p>
+                <h1 className="text-2xl font-bold flex items-center gap-2">
+                  <Gamepad2 className="w-6 h-6 text-uec-accent" />
+                  Game Launcher
+                </h1>
+                <p className="text-gray-400 text-sm">Choose and launch your favorite Eaglercraft client</p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-3">
-                <select 
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white/20"
-                  data-sort="clients"
-                >
-                  <option value="players">Most Players</option>
-                  <option value="name">A-Z</option>
-                  <option value="recent">Recently Played</option>
-                </select>
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-2 text-sm text-gray-400">
+                  <Users className="w-4 h-4" />
+                  <span>{clients.reduce((sum, client) => sum + client.playerCount, 0)} total players online</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="section py-20 text-center">
-            <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
-            <p className="text-gray-300">Scanning available clients...</p>
-          </div>
-        )}
-
-        {/* Featured Clients */}
-        {!loading && featuredClients.length > 0 && (
-          <section className="section py-8" data-ui-section="featured-clients">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex items-center gap-2 mb-6">
-                <Star className="w-6 h-6 text-uec-accent" />
-                <h2 className="text-2xl font-bold">Featured Clients</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {featuredClients.map((client) => (
-                  <div key={client.name} className="card hover:scale-[1.02] transition-transform duration-200" data-client={client.name}>
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">{client.displayName}</h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-400">
-                          <span>v{client.version}</span>
-                          <div className="flex items-center gap-1">
-                            <Users className="w-4 h-4" />
-                            <span>{client.playerCount} online</span>
+        {/* Main Dashboard Content */}
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Quick Launch Section */}
+          <div className="mb-8">
+            <div className="card bg-gradient-to-r from-gray-900 to-black border-gray-700 p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Client Selection */}
+                <div>
+                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <Play className="w-6 h-6 text-uec-accent" />
+                    Quick Launch
+                  </h2>
+                  
+                  {/* Dropdown Selector */}
+                  <div className="relative mb-6">
+                    <button
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      className="w-full p-4 bg-gray-800 border border-gray-700 rounded-lg flex items-center justify-between hover:bg-gray-700 transition-colors"
+                      data-dropdown="client-selector"
+                    >
+                      {selectedClient ? (
+                        <div className="flex items-center gap-3">
+                          <div className={`w-3 h-3 rounded-full ${getStatusColor(selectedClient.status)}`}></div>
+                          <div className="text-left">
+                            <div className="font-semibold">{selectedClient.displayName}</div>
+                            <div className="text-sm text-gray-400">v{selectedClient.version} • {selectedClient.playerCount} online</div>
                           </div>
-                          {client.lastPlayed && (
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              <span>{formatLastPlayed(client.lastPlayed)}</span>
-                            </div>
-                          )}
                         </div>
-                      </div>
-                      <Star className="w-5 h-5 text-uec-accent" />
-                    </div>
-                    
-                    <p className="text-gray-300 mb-6">{client.description}</p>
-                    
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => handleLaunchClient(client.name)}
-                        className="button-primary flex items-center gap-2 flex-1 justify-center"
-                        data-action="launch"
-                        data-client-name={client.name}
-                      >
-                        <Play className="w-4 h-4" />
-                        Launch Game
-                      </button>
-                      <button
-                        className="button-secondary flex items-center gap-2 px-4"
-                        data-action="info"
-                        data-client-name={client.name}
-                      >
-                        <Info className="w-4 h-4" />
-                        Info
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* All Clients */}
-        {!loading && (
-          <section className="section py-8" data-ui-section="all-clients">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-2xl font-bold mb-6">All Clients</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {otherClients.map((client) => (
-                  <div key={client.name} className="card hover:scale-[1.02] transition-transform duration-200" data-client={client.name}>
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold mb-2">{client.displayName}</h3>
-                      <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
-                        <span>v{client.version}</span>
-                        <div className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          <span>{client.playerCount}</span>
-                        </div>
-                      </div>
-                      {client.lastPlayed && (
-                        <div className="flex items-center gap-1 text-sm text-gray-400 mb-3">
-                          <Clock className="w-4 h-4" />
-                          <span>Last played {formatLastPlayed(client.lastPlayed)}</span>
-                        </div>
+                      ) : (
+                        <span className="text-gray-400">Select a client...</span>
                       )}
+                      <ChevronDown className={`w-5 h-5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {dropdownOpen && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-2xl z-50 max-h-80 overflow-y-auto">
+                        {clients.map((client) => (
+                          <button
+                            key={client.id}
+                            onClick={() => {
+                              setSelectedClient(client);
+                              setDropdownOpen(false);
+                            }}
+                            className="w-full p-4 text-left hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                            data-client-option={client.id}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-3 h-3 rounded-full ${getStatusColor(client.status)}`}></div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-semibold">{client.displayName}</span>
+                                  {client.featured && <Star className="w-4 h-4 text-uec-accent" />}
+                                  {getCategoryIcon(client.category)}
+                                </div>
+                                <div className="text-sm text-gray-400">
+                                  v{client.version} • {client.playerCount} players
+                                  {client.lastPlayed && ` • Last played ${formatLastPlayed(client.lastPlayed)}`}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Launch Button */}
+                  {selectedClient && (
+                    <div className="space-y-4">
+                      <button
+                        onClick={() => handleLaunchClient(selectedClient)}
+                        disabled={currentlyPlaying === selectedClient.id}
+                        className="w-full button-primary py-4 text-lg font-semibold flex items-center justify-center gap-3 disabled:opacity-50"
+                        data-action="launch-selected"
+                        data-client-id={selectedClient.id}
+                      >
+                        {currentlyPlaying === selectedClient.id ? (
+                          <>
+                            <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div>
+                            Launching...
+                          </>
+                        ) : (
+                          <>
+                            <ExternalLink className="w-5 h-5" />
+                            Launch {selectedClient.displayName}
+                          </>
+                        )}
+                      </button>
+                      
+                      <div className="flex gap-3">
+                        <button className="flex-1 button-secondary py-3 flex items-center justify-center gap-2">
+                          <Info className="w-4 h-4" />
+                          Client Info
+                        </button>
+                        <button className="flex-1 button-secondary py-3 flex items-center justify-center gap-2">
+                          <Download className="w-4 h-4" />
+                          Download
+                        </button>
+                      </div>
                     </div>
-                    
-                    <p className="text-gray-300 text-sm mb-4 line-clamp-2">{client.description}</p>
-                    
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleLaunchClient(client.name)}
-                        className="button-primary flex items-center gap-2 flex-1 justify-center text-sm"
-                        data-action="launch"
-                        data-client-name={client.name}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Launch
-                      </button>
-                      <button
-                        className="button-secondary px-3"
-                        data-action="info"
-                        data-client-name={client.name}
-                      >
-                        <Info className="w-4 h-4" />
-                      </button>
+                  )}
+                </div>
+
+                {/* Selected Client Details */}
+                {selectedClient && (
+                  <div className="lg:pl-8">
+                    <div className="card bg-black/50 border-gray-700">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className={`w-4 h-4 rounded-full ${getStatusColor(selectedClient.status)}`}></div>
+                        <h3 className="text-xl font-semibold">{selectedClient.displayName}</h3>
+                        {selectedClient.featured && <Star className="w-5 h-5 text-uec-accent" />}
+                      </div>
+                      
+                      <p className="text-gray-300 mb-4">{selectedClient.description}</p>
+                      
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-400">Version:</span>
+                          <div className="font-semibold">{selectedClient.version}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-400">Players Online:</span>
+                          <div className="font-semibold text-green-400">{selectedClient.playerCount}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-400">Status:</span>
+                          <div className="font-semibold capitalize">{selectedClient.status}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-400">Category:</span>
+                          <div className="font-semibold capitalize flex items-center gap-1">
+                            {getCategoryIcon(selectedClient.category)}
+                            {selectedClient.category}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-          </section>
-        )}
+          </div>
 
-        {/* Empty State */}
-        {!loading && clients.length === 0 && (
-          <div className="section py-20 text-center">
-            <div className="max-w-md mx-auto">
-              <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Play className="w-8 h-8 text-gray-400" />
+          {/* Featured Clients Grid */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <Star className="w-6 h-6 text-uec-accent" />
+              Featured Clients
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {clients.filter(client => client.featured).map((client) => (
+                <div 
+                  key={client.id} 
+                  className="card hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                  onClick={() => setSelectedClient(client)}
+                  data-featured-client={client.id}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(client.status)}`}></div>
+                    <Star className="w-5 h-5 text-uec-accent" />
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold mb-2">{client.displayName}</h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{client.description}</p>
+                  
+                  <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
+                    <span>v{client.version}</span>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      <span>{client.playerCount}</span>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLaunchClient(client);
+                    }}
+                    className="w-full button-primary py-2 text-sm flex items-center justify-center gap-2"
+                    data-action="quick-launch"
+                    data-client-id={client.id}
+                  >
+                    <Play className="w-4 h-4" />
+                    Quick Launch
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* All Clients Table */}
+          <div>
+            <h2 className="text-2xl font-bold mb-6">All Available Clients</h2>
+            
+            <div className="card overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-800 border-b border-gray-700">
+                    <tr>
+                      <th className="text-left py-3 px-4 font-semibold">Client</th>
+                      <th className="text-left py-3 px-4 font-semibold">Version</th>
+                      <th className="text-left py-3 px-4 font-semibold">Players</th>
+                      <th className="text-left py-3 px-4 font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 font-semibold">Last Played</th>
+                      <th className="text-right py-3 px-4 font-semibold">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients.map((client) => (
+                      <tr 
+                        key={client.id} 
+                        className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors"
+                        data-client-row={client.id}
+                      >
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-3">
+                            {getCategoryIcon(client.category)}
+                            <div>
+                              <div className="font-semibold flex items-center gap-2">
+                                {client.displayName}
+                                {client.featured && <Star className="w-4 h-4 text-uec-accent" />}
+                              </div>
+                              <div className="text-sm text-gray-400 capitalize">{client.category}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-gray-300">{client.version}</td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-1 text-green-400">
+                            <Users className="w-4 h-4" />
+                            <span>{client.playerCount}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${getStatusColor(client.status)}`}></div>
+                            <span className="capitalize text-sm">{client.status}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-gray-400 text-sm">
+                          {client.lastPlayed ? formatLastPlayed(client.lastPlayed) : 'Never'}
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-2 justify-end">
+                            <button
+                              onClick={() => handleLaunchClient(client)}
+                              className="button-primary px-3 py-1 text-sm flex items-center gap-1"
+                              data-action="table-launch"
+                              data-client-id={client.id}
+                            >
+                              <Play className="w-3 h-3" />
+                              Launch
+                            </button>
+                            <button className="button-secondary px-2 py-1">
+                              <Info className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              <h3 className="text-xl font-semibold mb-2">No Clients Found</h3>
-              <p className="text-gray-400 mb-6">
-                No Eaglercraft clients were found in the /client/ directory. Contact an administrator to add game clients.
-              </p>
             </div>
           </div>
-        )}
-
-        {/* Quick Actions */}
-        <section className="section py-8 bg-black/30 border-t border-gray-800" data-ui-section="quick-actions">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <a
-                href="/downloads"
-                className="card hover:scale-[1.02] transition-transform duration-200 text-center"
-                data-action="downloads"
-              >
-                <ExternalLink className="w-8 h-8 text-uec-accent mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Download Clients</h3>
-                <p className="text-sm text-gray-400">Get offline versions</p>
-              </a>
-              
-              <a
-                href="/store"
-                className="card hover:scale-[1.02] transition-transform duration-200 text-center"
-                data-action="store"
-              >
-                <Star className="w-8 h-8 text-uec-accent mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Upgrade Rank</h3>
-                <p className="text-sm text-gray-400">Get premium benefits</p>
-              </a>
-              
-              <a
-                href="/support"
-                className="card hover:scale-[1.02] transition-transform duration-200 text-center"
-                data-action="support"
-              >
-                <Info className="w-8 h-8 text-uec-accent mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Need Help?</h3>
-                <p className="text-sm text-gray-400">Contact support</p>
-              </a>
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
     </Layout>
   );
