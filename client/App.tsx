@@ -14,6 +14,7 @@ import Chat from "./pages/Chat";
 import DirectMessages from "./pages/DirectMessages";
 import Store from "./pages/Store";
 import News from "./pages/News";
+import Events from "./pages/Events";
 import Support from "./pages/Support";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
