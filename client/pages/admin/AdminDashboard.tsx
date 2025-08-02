@@ -17,7 +17,7 @@ import {
   Globe,
   Zap
 } from "lucide-react";
-import Layout from "@/components/Layout";
+import AdminLayout from "@/components/AdminLayout";
 
 interface AdminStats {
   totalUsers: number;
