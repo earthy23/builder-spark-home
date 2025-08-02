@@ -52,7 +52,7 @@ const infoNavItems = [
 export default function Layout({ children, showSidebar = true }: LayoutProps) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isLoggedIn] = useState(false); // This will be managed by auth context later
+  const [isLoggedIn] = useState(true); // Simulating logged-in state for demo
 
   const isActive = (href: string) => location.pathname === href;
 
