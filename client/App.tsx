@@ -17,6 +17,7 @@ import News from "./pages/News";
 import Events from "./pages/Events";
 import Support from "./pages/Support";
 import Profile from "./pages/Profile";
+import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ChatModeration from "./pages/admin/ChatModeration";
 import UserManagement from "./pages/admin/UserManagement";
