@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, User, Mail, Lock, ArrowRight, UserCheck } from "lucide-react";
 import Layout from "@/components/Layout";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Register() {
   const [formData, setFormData] = useState({
