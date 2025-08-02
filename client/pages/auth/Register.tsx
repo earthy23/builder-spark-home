@@ -271,11 +271,11 @@ export default function Register() {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="w-full button-primary py-3 text-lg font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
                 data-action="register"
               >
-                {isLoading ? (
+                {loading ? (
                   <>
                     <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div>
                     Creating Account...
