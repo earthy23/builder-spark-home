@@ -281,7 +281,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                   </div>
 
                   {/* User Actions (if logged in) */}
-                  {isLoggedIn && (
+                  {isAuthenticated && (
                     <div className="border-t border-gray-800 pt-4">
                       <ul className="space-y-1">
                         <li>
@@ -296,6 +296,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                         </li>
                         <li>
                           <button
+                            onClick={logout}
                             className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200 w-full text-left"
                             data-action="logout"
                           >
