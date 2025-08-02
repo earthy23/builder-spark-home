@@ -61,7 +61,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
 
           {/* Info Pages */}
-          <Route path="/about" element={<PlaceholderPage title="About UEC Launcher" description="Learn more about our platform and mission." />} />
+          <Route path="/about" element={<About />} />
           <Route path="/terms" element={<PlaceholderPage title="Terms of Service" description="Terms and conditions for using UEC Launcher." />} />
           <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" description="How we protect and handle your personal data." />} />
 
