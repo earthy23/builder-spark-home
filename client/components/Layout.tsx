@@ -105,17 +105,21 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                   <Bell className="w-5 h-5" />
                   <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs"></span>
                 </button>
-                <div className="flex items-center gap-2 ml-2">
-                  <img 
-                    src="/assets/default-avatar.png" 
-                    alt="Profile" 
-                    className="w-8 h-8 rounded-full"
+                <Link
+                  to="/profile/settings"
+                  className="flex items-center gap-2 ml-2 p-2 hover:bg-gray-800 rounded-md transition-colors"
+                  data-nav="profile"
+                >
+                  <img
+                    src="/assets/default-avatar.png"
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
                     onError={(e) => {
                       e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM0QjVTNjMiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4KPC9zdmc+';
                     }}
                   />
-                  <span className="hidden sm:block text-sm">Username</span>
-                </div>
+                  <span className="hidden sm:block text-sm hover:text-white transition-colors">Username</span>
+                </Link>
               </>
             ) : (
               <div className="flex items-center gap-2">
