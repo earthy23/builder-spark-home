@@ -51,8 +51,8 @@ const App = () => (
           <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" description="How we protect and handle your personal data." />} />
 
           {/* Authentication */}
-          <Route path="/auth/login" element={<PlaceholderPage title="Login" description="Sign in to your UEC Launcher account." showSidebar={false} />} />
-          <Route path="/auth/register" element={<PlaceholderPage title="Register" description="Create a new UEC Launcher account." showSidebar={false} />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/reset-password" element={<PlaceholderPage title="Reset Password" description="Reset your account password." showSidebar={false} />} />
           <Route path="/auth/verify-email" element={<PlaceholderPage title="Verify Email" description="Verify your email address." showSidebar={false} />} />
 
