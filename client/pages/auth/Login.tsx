@@ -6,12 +6,12 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: "",
+    usernameOrEmail: "",
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { login, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
