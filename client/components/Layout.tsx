@@ -1,13 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { 
-  Home, 
-  Download, 
-  Store, 
-  Newspaper, 
-  Calendar, 
-  Users, 
-  Info, 
-  FileText, 
+import {
+  Home,
+  Download,
+  Store,
+  Newspaper,
+  Calendar,
+  Users,
+  Info,
+  FileText,
   Shield,
   MessageSquare,
   HeadphonesIcon,
@@ -17,10 +17,12 @@ import {
   LogOut,
   Menu,
   X,
-  Bell
+  Bell,
+  Crown
 } from "lucide-react";
 import { useState } from "react";
 import NotificationCenter from "./NotificationCenter";
+import { useAuth } from "../contexts/AuthContext";
 
 interface LayoutProps {
   children: React.ReactNode;
