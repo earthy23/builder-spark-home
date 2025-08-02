@@ -1,0 +1,297 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  MEMBER
+  VIP
+  VIP_PLUS
+  MOD
+  ADMIN
+}
+
+enum UserStatus {
+  ONLINE
+  AWAY
+  BUSY
+  OFFLINE
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ModerationAction {
+  WARNING
+  MUTE
+  KICK
+  BAN
+  UNBAN
+}
+
+model User {
+  id          String     @id @default(cuid())
+  username    String     @unique
+  email       String     @unique
+  displayName String
+  password    String
+  avatar      String?
+  role        UserRole   @default(MEMBER)
+  status      UserStatus @default(OFFLINE)
+  
+  // Profile information
+  bio         String?
+  joinedAt    DateTime   @default(now())
+  lastSeen    DateTime   @default(now())
+  isVerified  Boolean    @default(false)
+  isBanned    Boolean    @default(false)
+  banReason   String?
+  banExpiresAt DateTime?
+  
+  // Settings
+  isPrivate   Boolean    @default(false)
+  allowFriendRequests Boolean @default(true)
+  allowDirectMessages Boolean @default(true)
+  
+  // Statistics
+  totalPlayTime    Int      @default(0) // in minutes
+  gamesPlayed      Int      @default(0)
+  messagesCount    Int      @default(0)
+  
+  // Relations
+  sentFriendRequests     FriendRequest[] @relation("SentRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedRequests")
+  friends                Friendship[]    @relation("UserFriends")
+  friendOf               Friendship[]    @relation("FriendOfUser")
+  
+  sentMessages           Message[]       @relation("MessageSender")
+  conversations          ConversationParticipant[]
+  
+  tickets                Ticket[]
+  moderationActions      ModerationLog[] @relation("ModeratedUser")
+  performedModerations   ModerationLog[] @relation("Moderator")
+  
+  gameSessions           GameSession[]
+  analytics              UserAnalytics[]
+  
+  refreshTokens          RefreshToken[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@map("refresh_tokens")
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  user      User     @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User     @relation("FriendOfUser", fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, friendId])
+  @@map("friendships")
+}
+
+model FriendRequest {
+  id        String              @id @default(cuid())
+  senderId  String
+  receiverId String
+  status    FriendRequestStatus @default(PENDING)
+  message   String?
+  sender    User                @relation("SentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver  User                @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  
+  @@unique([senderId, receiverId])
+  @@map("friend_requests")
+}
+
+model Conversation {
+  id           String                    @id @default(cuid())
+  name         String?
+  isGroup      Boolean                   @default(false)
+  avatar       String?
+  description  String?
+  
+  participants ConversationParticipant[]
+  messages     Message[]
+  
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt       DateTime     @default(now())
+  lastReadAt     DateTime?
+  
+  @@unique([conversationId, userId])
+  @@map("conversation_participants")
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  content        String
+  type           MessageType @default(TEXT)
+  conversationId String
+  senderId       String
+  replyToId      String?
+  
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  replyTo        Message?     @relation("MessageReply", fields: [replyToId], references: [id])
+  replies        Message[]    @relation("MessageReply")
+  
+  attachments    String[]     @default([])
+  isEdited       Boolean      @default(false)
+  isDeleted      Boolean      @default(false)
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  
+  @@map("messages")
+}
+
+model GameClient {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  version     String
+  description String
+  path        String
+  isActive    Boolean @default(true)
+  category    String  @default("classic")
+  featured    Boolean @default(false)
+  
+  sessions    GameSession[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("game_clients")
+}
+
+model GameSession {
+  id         String     @id @default(cuid())
+  userId     String
+  clientId   String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client     GameClient @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  startedAt  DateTime   @default(now())
+  endedAt    DateTime?
+  duration   Int?       // in minutes
+  
+  @@map("game_sessions")
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  category    String
+  
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  
+  @@map("tickets")
+}
+
+model ModerationLog {
+  id          String           @id @default(cuid())
+  action      ModerationAction
+  reason      String
+  duration    Int?             // in minutes, for temporary actions
+  
+  moderatorId String
+  targetId    String
+  moderator   User             @relation("Moderator", fields: [moderatorId], references: [id])
+  target      User             @relation("ModeratedUser", fields: [targetId], references: [id])
+  
+  createdAt   DateTime         @default(now())
+  
+  @@map("moderation_logs")
+}
+
+model UserAnalytics {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date            DateTime @db.Date
+  loginCount      Int      @default(0)
+  playTimeMinutes Int      @default(0)
+  messagesCount   Int      @default(0)
+  
+  @@unique([userId, date])
+  @@map("user_analytics")
+}
+
+model SystemSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("system_settings")
+}
