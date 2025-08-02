@@ -302,7 +302,7 @@ export default function Chat() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <div className="min-h-screen">
         <div className="flex h-[calc(100vh-4rem)]">
           {/* Conversations Sidebar */}
           <div className="w-80 bg-gray-900/90 border-r border-gray-800 flex flex-col">
