@@ -26,35 +26,40 @@ export default function Login() {
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+
+    if (!formData.usernameOrEmail) {
+      newErrors.usernameOrEmail = "Username or email is required";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
-    setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Simulate successful login
-    navigate('/dashboard');
+
+    try {
+      const success = await login(formData.usernameOrEmail, formData.password);
+      if (success) {
+        navigate('/dashboard');
+      } else {
+        setErrors({
+          usernameOrEmail: "Invalid username/email or password",
+          password: "Invalid username/email or password"
+        });
+      }
+    } catch (error) {
+      setErrors({
+        usernameOrEmail: "Login failed. Please try again.",
+        password: "Login failed. Please try again."
+      });
+    }
   };
 
   return (
