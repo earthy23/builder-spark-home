@@ -63,10 +63,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-        <div className="flex">
-          {/* Admin Sidebar */}
-          <div className="w-72 bg-red-950/20 border-r border-red-800/30 min-h-screen">
+      <div className="min-h-screen flex">
+          {/* Admin Sidebar - Fixed with independent scrolling */}
+          <div className="w-72 bg-red-950/20 border-r border-red-800/30 h-screen fixed left-0 top-0 z-30">
             <div className="p-6 border-b border-red-800/30">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
@@ -79,7 +78,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               </div>
             </div>
 
-            <nav className="p-4">
+            <nav className="p-4 h-[calc(100vh-120px)] overflow-y-auto">
               <ul className="space-y-2">
                 {adminNavItems.map((item) => (
                   <li key={item.href}>
@@ -88,8 +87,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       className={`
                         flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
                         transition-all duration-200
-                        ${isActive(item.href) 
-                          ? 'bg-red-600 text-white shadow-lg' 
+                        ${isActive(item.href)
+                          ? 'bg-red-600 text-white shadow-lg'
                           : 'text-red-200 hover:bg-red-600/20 hover:text-red-100'
                         }
                       `}
@@ -101,26 +100,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   </li>
                 ))}
               </ul>
-
-              {/* Back to Main App */}
-              <div className="mt-8 pt-6 border-t border-red-800/30">
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
-                  data-action="back-to-dashboard"
-                >
-                  <Home className="w-5 h-5" />
-                  Back to Dashboard
-                </Link>
-              </div>
             </nav>
           </div>
 
-          {/* Admin Content */}
-          <div className="flex-1">
+          {/* Admin Content - Offset by sidebar width with independent scrolling */}
+          <div className="flex-1 ml-72 h-screen overflow-y-auto">
             {children}
           </div>
-        </div>
       </div>
     </Layout>
   );
