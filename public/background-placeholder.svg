@@ -1,0 +1,81 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Define gradients for depth -->
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#4682B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2F4F4F;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="grassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9ACD32;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#556B2F;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#696969;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2F4F4F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="1920" height="1080" fill="url(#skyGradient)"/>
+  
+  <!-- Mountain layers (distant to close) -->
+  <!-- Distant mountains -->
+  <polygon points="0,400 300,250 600,300 900,200 1200,280 1500,220 1800,300 1920,250 1920,1080 0,1080" 
+           fill="#4682B4" opacity="0.6"/>
+  
+  <!-- Mid-distance mountains -->
+  <polygon points="0,500 250,350 500,400 750,320 1000,380 1250,340 1500,400 1750,360 1920,420 1920,1080 0,1080" 
+           fill="#696969" opacity="0.8"/>
+  
+  <!-- Close mountains -->
+  <polygon points="0,600 200,450 400,500 600,420 800,480 1000,440 1200,500 1400,460 1600,520 1800,480 1920,520 1920,1080 0,1080" 
+           fill="url(#mountainGradient)"/>
+  
+  <!-- Rolling hills -->
+  <polygon points="0,700 150,650 300,680 450,640 600,670 750,650 900,680 1050,660 1200,690 1350,670 1500,700 1650,680 1800,710 1920,690 1920,1080 0,1080" 
+           fill="url(#grassGradient)"/>
+  
+  <!-- Ground/grass layer -->
+  <rect x="0" y="800" width="1920" height="280" fill="#228B22"/>
+  
+  <!-- Add some simple geometric trees (Minecraft style) -->
+  <!-- Tree 1 -->
+  <rect x="200" y="720" width="20" height="80" fill="#8B4513"/>
+  <rect x="180" y="680" width="60" height="60" fill="#228B22"/>
+  
+  <!-- Tree 2 -->
+  <rect x="400" y="730" width="20" height="70" fill="#8B4513"/>
+  <rect x="380" y="690" width="60" height="60" fill="#32CD32"/>
+  
+  <!-- Tree 3 -->
+  <rect x="600" y="740" width="20" height="60" fill="#8B4513"/>
+  <rect x="580" y="700" width="60" height="60" fill="#228B22"/>
+  
+  <!-- Tree 4 -->
+  <rect x="1200" y="720" width="20" height="80" fill="#8B4513"/>
+  <rect x="1180" y="680" width="60" height="60" fill="#32CD32"/>
+  
+  <!-- Tree 5 -->
+  <rect x="1500" y="730" width="20" height="70" fill="#8B4513"/>
+  <rect x="1480" y="690" width="60" height="60" fill="#228B22"/>
+  
+  <!-- Add some simple clouds -->
+  <ellipse cx="300" cy="150" rx="80" ry="30" fill="white" opacity="0.8"/>
+  <ellipse cx="320" cy="140" rx="60" ry="25" fill="white" opacity="0.8"/>
+  <ellipse cx="280" cy="140" rx="50" ry="20" fill="white" opacity="0.8"/>
+  
+  <ellipse cx="800" cy="120" rx="90" ry="35" fill="white" opacity="0.7"/>
+  <ellipse cx="820" cy="110" rx="70" ry="30" fill="white" opacity="0.7"/>
+  <ellipse cx="780" cy="110" rx="60" ry="25" fill="white" opacity="0.7"/>
+  
+  <ellipse cx="1400" cy="180" rx="100" ry="40" fill="white" opacity="0.6"/>
+  <ellipse cx="1420" cy="170" rx="80" ry="35" fill="white" opacity="0.6"/>
+  <ellipse cx="1380" cy="170" rx="70" ry="30" fill="white" opacity="0.6"/>
+  
+  <!-- Add a subtle sun -->
+  <circle cx="1600" cy="200" r="50" fill="#FFD700" opacity="0.8"/>
+  <circle cx="1600" cy="200" r="40" fill="#FFA500" opacity="0.6"/>
+</svg>
