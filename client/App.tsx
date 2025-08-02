@@ -56,14 +56,14 @@ const App = () => (
           <Route path="/profile/rank" element={<PlaceholderPage title="Your Rank" description="View your current rank and perks." />} />
 
           {/* Social */}
-          <Route path="/friends" element={<PlaceholderPage title="Friends" description="Manage your friends list and see who's online." />} />
+          <Route path="/friends" element={<Friends />} />
           <Route path="/friends/requests" element={<PlaceholderPage title="Friend Requests" description="Accept or reject incoming friend requests." />} />
           <Route path="/friends/blocked" element={<PlaceholderPage title="Blocked Users" description="Manage your blocked users list." />} />
 
           {/* Chat */}
-          <Route path="/chat" element={<PlaceholderPage title="Chat" description="Your message inbox and conversations." />} />
-          <Route path="/chat/:id" element={<PlaceholderPage title="Direct Messages" description="Private conversation with a friend." />} />
-          <Route path="/chat/group/:id" element={<PlaceholderPage title="Group Chat" description="Group conversation with multiple users." />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:id" element={<Chat />} />
+          <Route path="/chat/group/:id" element={<Chat />} />
           <Route path="/chat/create-group" element={<PlaceholderPage title="Create Group" description="Create a new group chat with friends." />} />
 
           {/* Admin Panel */}
