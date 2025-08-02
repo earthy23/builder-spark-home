@@ -109,7 +109,11 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
           <div className="flex items-center gap-2">
             {isLoggedIn ? (
               <>
-                <button className="p-2 hover:bg-gray-800 rounded-md relative" data-action="notifications">
+                <button
+                  onClick={() => setNotificationsOpen(!notificationsOpen)}
+                  className="p-2 hover:bg-gray-800 rounded-md relative"
+                  data-action="notifications"
+                >
                   <Bell className="w-5 h-5" />
                   <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs"></span>
                 </button>
