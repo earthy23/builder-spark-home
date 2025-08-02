@@ -17,8 +17,7 @@ import {
   LogOut,
   Menu,
   X,
-  Bell,
-  Search
+  Bell
 } from "lucide-react";
 import { useState } from "react";
 import NotificationCenter from "./NotificationCenter";
