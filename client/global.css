@@ -72,7 +72,10 @@
 
   body {
     @apply bg-black text-white;
-    background-image: url('https://cdn.builder.io/api/v1/image/assets%2Fafa92e48fca0469382a5693ca0cc9f80%2F3edcba03308141d18a4b155ed16701a9?format=webp&width=1920');
+    /* Fallback to placeholder image first, then external image */
+    background-image:
+      url('/background-placeholder.svg'),
+      url('https://cdn.builder.io/api/v1/image/assets%2Fafa92e48fca0469382a5693ca0cc9f80%2F3edcba03308141d18a4b155ed16701a9?format=webp&width=1920');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
