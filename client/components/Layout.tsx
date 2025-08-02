@@ -53,13 +53,9 @@ const infoNavItems = [
 
 export default function Layout({ children, showSidebar = true }: LayoutProps) {
   const location = useLocation();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  // Check if user is on a protected route to determine auth state
-  const isAuthRoute = location.pathname.startsWith('/auth');
-  const isPublicRoute = location.pathname === '/' || location.pathname.startsWith('/about') ||
-                       location.pathname.startsWith('/terms') || location.pathname.startsWith('/privacy');
-  const [isLoggedIn] = useState(!isAuthRoute && !isPublicRoute); // Only logged in for protected routes
 
   const isActive = (href: string) => location.pathname === href;
 
