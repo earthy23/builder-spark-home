@@ -70,9 +70,9 @@ const App = () => (
           <Route path="/chat/create-group" element={<PlaceholderPage title="Create Group" description="Create a new group chat with friends." />} />
 
           {/* Admin Panel */}
-          <Route path="/admin/dashboard" element={<PlaceholderPage title="Admin Dashboard" description="Site statistics and administrative overview." />} />
-          <Route path="/admin/users" element={<PlaceholderPage title="User Management" description="Manage user accounts, roles, and permissions." />} />
-          <Route path="/admin/chat-moderation" element={<PlaceholderPage title="Chat Moderation" description="Review flagged content and moderate conversations." />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/chat-moderation" element={<ChatModeration />} />
           <Route path="/admin/tickets" element={<PlaceholderPage title="Support Tickets" description="Manage and respond to user support requests." />} />
           <Route path="/admin/domains" element={<PlaceholderPage title="Domain Manager" description="Manage domain configurations and settings." />} />
           <Route path="/admin/analytics" element={<PlaceholderPage title="Analytics" description="View site analytics and user activity." />} />
