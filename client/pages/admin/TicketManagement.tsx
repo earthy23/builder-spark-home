@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { 
-  LifeBuoy, 
-  Search, 
-  Filter, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
+import {
+  LifeBuoy,
+  Search,
+  Filter,
+  Clock,
+  CheckCircle,
+  XCircle,
   AlertCircle,
   MessageCircle,
   User,
@@ -15,7 +15,7 @@ import {
   Paperclip,
   Eye,
   MoreVertical,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 
@@ -23,9 +23,9 @@ interface Ticket {
   id: string;
   subject: string;
   description: string;
-  category: 'technical' | 'billing' | 'abuse' | 'feature' | 'other';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'open' | 'in_progress' | 'waiting_response' | 'resolved' | 'closed';
+  category: "technical" | "billing" | "abuse" | "feature" | "other";
+  priority: "low" | "medium" | "high" | "urgent";
+  status: "open" | "in_progress" | "waiting_response" | "resolved" | "closed";
   user: {
     id: string;
     username: string;
@@ -57,7 +57,8 @@ const mockTickets: Ticket[] = [
   {
     id: "ticket_1",
     subject: "Cannot connect to server",
-    description: "I keep getting disconnected from the game server. The error message says 'Connection timeout'. This has been happening for the past 2 days.",
+    description:
+      "I keep getting disconnected from the game server. The error message says 'Connection timeout'. This has been happening for the past 2 days.",
     category: "technical",
     priority: "high",
     status: "open",
@@ -65,17 +66,18 @@ const mockTickets: Ticket[] = [
       id: "user_1",
       username: "steve_builder",
       displayName: "Steve Builder",
-      email: "steve@example.com"
+      email: "steve@example.com",
     },
     createdAt: "2024-01-15T10:30:00Z",
     updatedAt: "2024-01-15T10:30:00Z",
     responses: [],
-    tags: ["connection", "timeout"]
+    tags: ["connection", "timeout"],
   },
   {
     id: "ticket_2",
     subject: "VIP rank not working",
-    description: "I purchased VIP rank yesterday but I still don't have access to VIP features. My username is alex_crafter and I have the receipt.",
+    description:
+      "I purchased VIP rank yesterday but I still don't have access to VIP features. My username is alex_crafter and I have the receipt.",
     category: "billing",
     priority: "medium",
     status: "in_progress",
@@ -83,7 +85,7 @@ const mockTickets: Ticket[] = [
       id: "user_2",
       username: "alex_crafter",
       displayName: "Alex Crafter",
-      email: "alex@example.com"
+      email: "alex@example.com",
     },
     assignedTo: "support_agent_1",
     createdAt: "2024-01-14T15:20:00Z",
@@ -91,22 +93,24 @@ const mockTickets: Ticket[] = [
     responses: [
       {
         id: "resp_1",
-        content: "Hi Alex, thank you for contacting us. I can see your VIP purchase in our system. I'm escalating this to our billing team to resolve the issue with your rank.",
+        content:
+          "Hi Alex, thank you for contacting us. I can see your VIP purchase in our system. I'm escalating this to our billing team to resolve the issue with your rank.",
         author: {
           id: "support_1",
           username: "support_agent_1",
           displayName: "Support Agent",
-          isStaff: true
+          isStaff: true,
         },
-        timestamp: "2024-01-15T09:15:00Z"
-      }
+        timestamp: "2024-01-15T09:15:00Z",
+      },
     ],
-    tags: ["vip", "billing", "rank"]
+    tags: ["vip", "billing", "rank"],
   },
   {
     id: "ticket_3",
     subject: "Report player harassment",
-    description: "Player 'toxic_player' has been harassing me and other players in chat. They use inappropriate language and won't stop even after warnings.",
+    description:
+      "Player 'toxic_player' has been harassing me and other players in chat. They use inappropriate language and won't stop even after warnings.",
     category: "abuse",
     priority: "high",
     status: "resolved",
@@ -114,7 +118,7 @@ const mockTickets: Ticket[] = [
       id: "user_3",
       username: "peaceful_player",
       displayName: "Peaceful Player",
-      email: "peaceful@example.com"
+      email: "peaceful@example.com",
     },
     assignedTo: "moderator_1",
     createdAt: "2024-01-13T20:45:00Z",
@@ -122,18 +126,19 @@ const mockTickets: Ticket[] = [
     responses: [
       {
         id: "resp_2",
-        content: "Thank you for reporting this. We have reviewed the chat logs and taken appropriate action against the reported player. They have been banned for 7 days.",
+        content:
+          "Thank you for reporting this. We have reviewed the chat logs and taken appropriate action against the reported player. They have been banned for 7 days.",
         author: {
           id: "mod_1",
           username: "moderator_1",
           displayName: "Moderator",
-          isStaff: true
+          isStaff: true,
         },
-        timestamp: "2024-01-14T12:30:00Z"
-      }
+        timestamp: "2024-01-14T12:30:00Z",
+      },
     ],
-    tags: ["harassment", "chat", "resolved"]
-  }
+    tags: ["harassment", "chat", "resolved"],
+  },
 ];
 
 export default function TicketManagement() {
@@ -149,7 +154,7 @@ export default function TicketManagement() {
     // Simulate loading ticket data
     const loadTickets = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setTickets(mockTickets);
       setLoading(false);
     };
@@ -159,43 +164,65 @@ export default function TicketManagement() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'text-red-400 bg-red-500/10 border-red-500/30';
-      case 'high': return 'text-orange-400 bg-orange-500/10 border-orange-500/30';
-      case 'medium': return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30';
-      case 'low': return 'text-green-400 bg-green-500/10 border-green-500/30';
-      default: return 'text-gray-400 bg-gray-500/10 border-gray-500/30';
+      case "urgent":
+        return "text-red-400 bg-red-500/10 border-red-500/30";
+      case "high":
+        return "text-orange-400 bg-orange-500/10 border-orange-500/30";
+      case "medium":
+        return "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
+      case "low":
+        return "text-green-400 bg-green-500/10 border-green-500/30";
+      default:
+        return "text-gray-400 bg-gray-500/10 border-gray-500/30";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'text-blue-400 bg-blue-500/10';
-      case 'in_progress': return 'text-yellow-400 bg-yellow-500/10';
-      case 'waiting_response': return 'text-purple-400 bg-purple-500/10';
-      case 'resolved': return 'text-green-400 bg-green-500/10';
-      case 'closed': return 'text-gray-400 bg-gray-500/10';
-      default: return 'text-gray-400 bg-gray-500/10';
+      case "open":
+        return "text-blue-400 bg-blue-500/10";
+      case "in_progress":
+        return "text-yellow-400 bg-yellow-500/10";
+      case "waiting_response":
+        return "text-purple-400 bg-purple-500/10";
+      case "resolved":
+        return "text-green-400 bg-green-500/10";
+      case "closed":
+        return "text-gray-400 bg-gray-500/10";
+      default:
+        return "text-gray-400 bg-gray-500/10";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'open': return <AlertCircle className="w-4 h-4" />;
-      case 'in_progress': return <Clock className="w-4 h-4" />;
-      case 'waiting_response': return <MessageCircle className="w-4 h-4" />;
-      case 'resolved': return <CheckCircle className="w-4 h-4" />;
-      case 'closed': return <XCircle className="w-4 h-4" />;
-      default: return <LifeBuoy className="w-4 h-4" />;
+      case "open":
+        return <AlertCircle className="w-4 h-4" />;
+      case "in_progress":
+        return <Clock className="w-4 h-4" />;
+      case "waiting_response":
+        return <MessageCircle className="w-4 h-4" />;
+      case "resolved":
+        return <CheckCircle className="w-4 h-4" />;
+      case "closed":
+        return <XCircle className="w-4 h-4" />;
+      default:
+        return <LifeBuoy className="w-4 h-4" />;
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'technical': return 'bg-blue-600';
-      case 'billing': return 'bg-green-600';
-      case 'abuse': return 'bg-red-600';
-      case 'feature': return 'bg-purple-600';
-      default: return 'bg-gray-600';
+      case "technical":
+        return "bg-blue-600";
+      case "billing":
+        return "bg-green-600";
+      case "abuse":
+        return "bg-red-600";
+      case "feature":
+        return "bg-purple-600";
+      default:
+        return "bg-gray-600";
     }
   };
 
@@ -204,16 +231,22 @@ export default function TicketManagement() {
   };
 
   const handleStatusChange = (ticketId: string, newStatus: string) => {
-    setTickets(prev => 
-      prev.map(ticket => 
-        ticket.id === ticketId 
-          ? { ...ticket, status: newStatus as any, updatedAt: new Date().toISOString() }
-          : ticket
-      )
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.id === ticketId
+          ? {
+              ...ticket,
+              status: newStatus as any,
+              updatedAt: new Date().toISOString(),
+            }
+          : ticket,
+      ),
     );
-    
+
     if (selectedTicket?.id === ticketId) {
-      setSelectedTicket(prev => prev ? { ...prev, status: newStatus as any } : null);
+      setSelectedTicket((prev) =>
+        prev ? { ...prev, status: newStatus as any } : null,
+      );
     }
   };
 
@@ -227,34 +260,37 @@ export default function TicketManagement() {
         id: "admin",
         username: "admin",
         displayName: "Admin",
-        isStaff: true
+        isStaff: true,
       },
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     const updatedTicket = {
       ...selectedTicket,
       responses: [...selectedTicket.responses, response],
       updatedAt: new Date().toISOString(),
-      status: 'waiting_response' as const
+      status: "waiting_response" as const,
     };
 
-    setTickets(prev => 
-      prev.map(ticket => 
-        ticket.id === selectedTicket.id ? updatedTicket : ticket
-      )
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.id === selectedTicket.id ? updatedTicket : ticket,
+      ),
     );
 
     setSelectedTicket(updatedTicket);
     setNewResponse("");
   };
 
-  const filteredTickets = tickets.filter(ticket => {
-    const matchesSearch = ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         ticket.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         ticket.user.username.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || ticket.status === statusFilter;
-    const matchesCategory = categoryFilter === 'all' || ticket.category === categoryFilter;
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch =
+      ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.user.username.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || ticket.status === statusFilter;
+    const matchesCategory =
+      categoryFilter === "all" || ticket.category === categoryFilter;
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
@@ -285,7 +321,7 @@ export default function TicketManagement() {
                   Support Tickets
                 </h2>
               </div>
-              
+
               <div className="space-y-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -298,9 +334,9 @@ export default function TicketManagement() {
                     data-search="tickets"
                   />
                 </div>
-                
+
                 <div className="flex gap-2">
-                  <select 
+                  <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className="flex-1 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
@@ -313,8 +349,8 @@ export default function TicketManagement() {
                     <option value="resolved">Resolved</option>
                     <option value="closed">Closed</option>
                   </select>
-                  
-                  <select 
+
+                  <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
                     className="flex-1 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
@@ -335,44 +371,55 @@ export default function TicketManagement() {
             <div className="flex-1 overflow-y-auto">
               {filteredTickets.map((ticket) => {
                 const isSelected = selectedTicket?.id === ticket.id;
-                
+
                 return (
                   <div
                     key={ticket.id}
                     onClick={() => setSelectedTicket(ticket)}
                     className={`
                       p-4 border-b border-gray-800 cursor-pointer transition-colors hover:bg-gray-800/50
-                      ${isSelected ? 'bg-gray-800 border-r-2 border-r-blue-500' : ''}
+                      ${isSelected ? "bg-gray-800 border-r-2 border-r-blue-500" : ""}
                     `}
                     data-ticket={ticket.id}
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-sm line-clamp-2">{ticket.subject}</h3>
-                      <span className={`px-1 py-0.5 rounded text-xs ${getCategoryColor(ticket.category)}`}>
+                      <h3 className="font-semibold text-sm line-clamp-2">
+                        {ticket.subject}
+                      </h3>
+                      <span
+                        className={`px-1 py-0.5 rounded text-xs ${getCategoryColor(ticket.category)}`}
+                      >
                         {ticket.category.toUpperCase()}
                       </span>
                     </div>
-                    
-                    <p className="text-sm text-gray-400 line-clamp-2 mb-3">{ticket.description}</p>
-                    
+
+                    <p className="text-sm text-gray-400 line-clamp-2 mb-3">
+                      {ticket.description}
+                    </p>
+
                     <div className="flex items-center justify-between mb-2">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getStatusColor(ticket.status)}`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getStatusColor(ticket.status)}`}
+                      >
                         {getStatusIcon(ticket.status)}
-                        {ticket.status.replace('_', ' ').toUpperCase()}
+                        {ticket.status.replace("_", " ").toUpperCase()}
                       </span>
-                      <span className={`px-2 py-1 border rounded text-xs ${getPriorityColor(ticket.priority)}`}>
+                      <span
+                        className={`px-2 py-1 border rounded text-xs ${getPriorityColor(ticket.priority)}`}
+                      >
                         {ticket.priority.toUpperCase()}
                       </span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>{ticket.user.displayName}</span>
                       <span>{formatTime(ticket.updatedAt)}</span>
                     </div>
-                    
+
                     {ticket.responses.length > 0 && (
                       <div className="mt-2 text-xs text-blue-400">
-                        {ticket.responses.length} response{ticket.responses.length !== 1 ? 's' : ''}
+                        {ticket.responses.length} response
+                        {ticket.responses.length !== 1 ? "s" : ""}
                       </div>
                     )}
                   </div>
@@ -389,11 +436,14 @@ export default function TicketManagement() {
                 <div className="p-6 border-b border-gray-800 bg-gray-900/50">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h1 className="text-2xl font-bold mb-2">{selectedTicket.subject}</h1>
+                      <h1 className="text-2xl font-bold mb-2">
+                        {selectedTicket.subject}
+                      </h1>
                       <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span className="flex items-center gap-1">
                           <User className="w-4 h-4" />
-                          {selectedTicket.user.displayName} (@{selectedTicket.user.username})
+                          {selectedTicket.user.displayName} (@
+                          {selectedTicket.user.username})
                         </span>
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
@@ -401,17 +451,21 @@ export default function TicketManagement() {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-3">
-                      <select 
+                      <select
                         value={selectedTicket.status}
-                        onChange={(e) => handleStatusChange(selectedTicket.id, e.target.value)}
+                        onChange={(e) =>
+                          handleStatusChange(selectedTicket.id, e.target.value)
+                        }
                         className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white/20"
                         data-status="change"
                       >
                         <option value="open">Open</option>
                         <option value="in_progress">In Progress</option>
-                        <option value="waiting_response">Waiting Response</option>
+                        <option value="waiting_response">
+                          Waiting Response
+                        </option>
                         <option value="resolved">Resolved</option>
                         <option value="closed">Closed</option>
                       </select>
@@ -420,16 +474,22 @@ export default function TicketManagement() {
                       </button>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getStatusColor(selectedTicket.status)}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getStatusColor(selectedTicket.status)}`}
+                    >
                       {getStatusIcon(selectedTicket.status)}
-                      {selectedTicket.status.replace('_', ' ').toUpperCase()}
+                      {selectedTicket.status.replace("_", " ").toUpperCase()}
                     </span>
-                    <span className={`px-3 py-1 border rounded text-sm ${getPriorityColor(selectedTicket.priority)}`}>
+                    <span
+                      className={`px-3 py-1 border rounded text-sm ${getPriorityColor(selectedTicket.priority)}`}
+                    >
                       {selectedTicket.priority.toUpperCase()} PRIORITY
                     </span>
-                    <span className={`px-2 py-1 rounded text-sm text-white ${getCategoryColor(selectedTicket.category)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-sm text-white ${getCategoryColor(selectedTicket.category)}`}
+                    >
                       {selectedTicket.category.toUpperCase()}
                     </span>
                   </div>
@@ -444,39 +504,54 @@ export default function TicketManagement() {
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <div className="font-semibold">{selectedTicket.user.displayName}</div>
-                        <div className="text-sm text-gray-400">{formatTime(selectedTicket.createdAt)}</div>
+                        <div className="font-semibold">
+                          {selectedTicket.user.displayName}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          {formatTime(selectedTicket.createdAt)}
+                        </div>
                       </div>
                     </div>
-                    <p className="text-gray-300">{selectedTicket.description}</p>
+                    <p className="text-gray-300">
+                      {selectedTicket.description}
+                    </p>
                   </div>
 
                   {/* Responses */}
                   {selectedTicket.responses.map((response) => (
-                    <div 
-                      key={response.id} 
+                    <div
+                      key={response.id}
                       className={`
                         p-4 border rounded-lg
-                        ${response.author.isStaff 
-                          ? 'bg-green-500/10 border-green-500/30 ml-8' 
-                          : 'bg-gray-800/30 border-gray-700 mr-8'
+                        ${
+                          response.author.isStaff
+                            ? "bg-green-500/10 border-green-500/30 ml-8"
+                            : "bg-gray-800/30 border-gray-700 mr-8"
                         }
                       `}
                     >
                       <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          response.author.isStaff ? 'bg-green-600' : 'bg-blue-600'
-                        }`}>
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            response.author.isStaff
+                              ? "bg-green-600"
+                              : "bg-blue-600"
+                          }`}
+                        >
                           <User className="w-4 h-4 text-white" />
                         </div>
                         <div>
                           <div className="font-semibold flex items-center gap-2">
                             {response.author.displayName}
                             {response.author.isStaff && (
-                              <span className="px-2 py-0.5 bg-green-600 text-white text-xs rounded">STAFF</span>
+                              <span className="px-2 py-0.5 bg-green-600 text-white text-xs rounded">
+                                STAFF
+                              </span>
                             )}
                           </div>
-                          <div className="text-sm text-gray-400">{formatTime(response.timestamp)}</div>
+                          <div className="text-sm text-gray-400">
+                            {formatTime(response.timestamp)}
+                          </div>
                         </div>
                       </div>
                       <p className="text-gray-300">{response.content}</p>
@@ -518,9 +593,12 @@ export default function TicketManagement() {
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
                   <LifeBuoy className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Select a ticket</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Select a ticket
+                  </h3>
                   <p className="text-gray-400">
-                    Choose a support ticket from the list to view details and respond
+                    Choose a support ticket from the list to view details and
+                    respond
                   </p>
                 </div>
               </div>

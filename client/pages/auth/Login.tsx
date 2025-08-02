@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Login() {
   const [formData, setFormData] = useState({
     usernameOrEmail: "",
-    password: ""
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -17,17 +17,17 @@ export default function Login() {
   // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -54,17 +54,17 @@ export default function Login() {
     try {
       const success = await login(formData.usernameOrEmail, formData.password);
       if (success) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         setErrors({
           usernameOrEmail: "Invalid username/email or password",
-          password: "Invalid username/email or password"
+          password: "Invalid username/email or password",
         });
       }
     } catch (error) {
       setErrors({
         usernameOrEmail: "Login failed. Please try again.",
-        password: "Login failed. Please try again."
+        password: "Login failed. Please try again.",
       });
     }
   };
@@ -75,20 +75,23 @@ export default function Login() {
         <div className="max-w-md w-full mx-4">
           {/* Logo/Header */}
           <div className="text-center mb-8">
-            <img 
-              src="/assets/logo.png" 
-              alt="UEC Launcher" 
+            <img
+              src="/assets/logo.png"
+              alt="UEC Launcher"
               className="w-16 h-16 mx-auto mb-4"
               onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                const fallback = document.createElement('div');
-                fallback.className = 'w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center text-black text-xl font-bold';
-                fallback.textContent = 'UEC';
+                e.currentTarget.style.display = "none";
+                const fallback = document.createElement("div");
+                fallback.className =
+                  "w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center text-black text-xl font-bold";
+                fallback.textContent = "UEC";
                 e.currentTarget.parentElement!.appendChild(fallback);
               }}
             />
             <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-            <p className="text-gray-400">Sign in to your UEC Launcher account</p>
+            <p className="text-gray-400">
+              Sign in to your UEC Launcher account
+            </p>
           </div>
 
           {/* Login Form */}
@@ -96,7 +99,10 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username/Email Field */}
               <div>
-                <label htmlFor="usernameOrEmail" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="usernameOrEmail"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Username or Email
                 </label>
                 <div className="relative">
@@ -109,20 +115,25 @@ export default function Login() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-4 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.usernameOrEmail ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.usernameOrEmail ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Enter your username or email"
                     data-input="usernameOrEmail"
                   />
                 </div>
                 {errors.usernameOrEmail && (
-                  <p className="text-red-400 text-sm mt-2">{errors.usernameOrEmail}</p>
+                  <p className="text-red-400 text-sm mt-2">
+                    {errors.usernameOrEmail}
+                  </p>
                 )}
               </div>
 
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -135,7 +146,7 @@ export default function Login() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-12 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.password ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.password ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Enter your password"
                     data-input="password"
@@ -146,7 +157,11 @@ export default function Login() {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     data-action="toggle-password"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
@@ -164,12 +179,15 @@ export default function Login() {
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-700 rounded bg-gray-800"
                     data-input="remember"
                   />
-                  <label htmlFor="remember" className="ml-2 block text-sm text-gray-300">
+                  <label
+                    htmlFor="remember"
+                    className="ml-2 block text-sm text-gray-300"
+                  >
                     Remember me
                   </label>
                 </div>
-                <Link 
-                  to="/auth/reset-password" 
+                <Link
+                  to="/auth/reset-password"
                   className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Forgot password?
@@ -203,7 +221,9 @@ export default function Login() {
                 <div className="w-full border-t border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-900 text-gray-400">Don't have an account?</span>
+                <span className="px-2 bg-gray-900 text-gray-400">
+                  Don't have an account?
+                </span>
               </div>
             </div>
 
@@ -219,13 +239,21 @@ export default function Login() {
 
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-blue-600/10 border border-blue-600/30 rounded-lg">
-            <h3 className="text-sm font-semibold text-blue-400 mb-2">Demo Access</h3>
-            <p className="text-xs text-gray-400 mb-2">For demonstration purposes:</p>
+            <h3 className="text-sm font-semibold text-blue-400 mb-2">
+              Demo Access
+            </h3>
+            <p className="text-xs text-gray-400 mb-2">
+              For demonstration purposes:
+            </p>
             <div className="text-xs text-gray-500 space-y-1">
-              <div><strong>Admin Account:</strong></div>
+              <div>
+                <strong>Admin Account:</strong>
+              </div>
               <div>Username: admin</div>
               <div>Password: admin123</div>
-              <div className="mt-2"><strong>Regular User:</strong></div>
+              <div className="mt-2">
+                <strong>Regular User:</strong>
+              </div>
               <div>Username: steve_builder</div>
               <div>Password: demo123</div>
             </div>
@@ -233,8 +261,8 @@ export default function Login() {
 
           {/* Back to Home */}
           <div className="text-center mt-6">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-sm text-gray-400 hover:text-white transition-colors"
             >
               ← Back to home

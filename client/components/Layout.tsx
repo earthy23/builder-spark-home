@@ -18,7 +18,7 @@ import {
   Menu,
   X,
   Bell,
-  Crown
+  Crown,
 } from "lucide-react";
 import { useState } from "react";
 import NotificationCenter from "./NotificationCenter";
@@ -72,26 +72,31 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                 className="lg:hidden p-2 hover:bg-gray-800 rounded-md"
                 data-action="toggle-sidebar"
               >
-                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {sidebarOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             )}
-            
+
             <Link to="/" className="flex items-center gap-3">
-              <img 
-                src="/assets/logo.png" 
-                alt="UEC Launcher" 
+              <img
+                src="/assets/logo.png"
+                alt="UEC Launcher"
                 className="w-8 h-8"
                 onError={(e) => {
                   // Fallback to text if image doesn't load
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<span class="text-xl font-bold text-white">UEC</span>';
+                  e.currentTarget.style.display = "none";
+                  e.currentTarget.parentElement!.innerHTML =
+                    '<span class="text-xl font-bold text-white">UEC</span>';
                 }}
               />
-              <span className="text-xl font-bold hidden sm:block">UEC Launcher</span>
+              <span className="text-xl font-bold hidden sm:block">
+                UEC Launcher
+              </span>
             </Link>
           </div>
-
-
 
           {/* Right side */}
           <div className="flex items-center gap-2">
@@ -115,25 +120,26 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                     alt="Profile"
                     className="w-8 h-8 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
                     onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM0QjVTNjMiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4KPC9zdmc+';
+                      e.currentTarget.src =
+                        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM0QjVTNjMiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4KPC9zdmc+";
                     }}
                   />
                   <span className="hidden sm:block text-sm hover:text-white transition-colors">
-                    {user?.displayName || user?.username || 'User'}
+                    {user?.displayName || user?.username || "User"}
                   </span>
                 </Link>
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Link 
-                  to="/auth/login" 
+                <Link
+                  to="/auth/login"
                   className="button-secondary px-4 py-2 text-sm"
                   data-auth="login"
                 >
                   Login
                 </Link>
-                <Link 
-                  to="/auth/register" 
+                <Link
+                  to="/auth/register"
                   className="button-primary px-4 py-2 text-sm"
                   data-auth="register"
                 >
@@ -151,19 +157,21 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
           <>
             {/* Mobile overlay */}
             {sidebarOpen && (
-              <div 
+              <div
                 className="fixed inset-0 z-40 bg-black/50 lg:hidden"
                 onClick={() => setSidebarOpen(false)}
               />
             )}
-            
+
             {/* Sidebar */}
-            <aside className={`
+            <aside
+              className={`
               fixed lg:static inset-y-0 left-0 z-40 w-64 bg-gray-900/95 backdrop-blur-md
-              transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+              transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
               lg:translate-x-0 transition-transform duration-200 ease-in-out
               border-r border-gray-800 pt-16 lg:pt-0
-            `}>
+            `}
+            >
               <div className="h-full overflow-y-auto px-3 py-4">
                 <nav className="space-y-6">
                   {/* Main Navigation */}
@@ -179,9 +187,10 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                             className={`
                               flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
                               transition-colors duration-200
-                              ${isActive(item.href) 
-                                ? 'bg-white text-black' 
-                                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                              ${
+                                isActive(item.href)
+                                  ? "bg-white text-black"
+                                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
                               }
                             `}
                             data-nav={item.label.toLowerCase()}
@@ -208,9 +217,10 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                               className={`
                                 flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
                                 transition-colors duration-200
-                                ${isActive(item.href)
-                                  ? 'bg-white text-black'
-                                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                                ${
+                                  isActive(item.href)
+                                    ? "bg-white text-black"
+                                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
                                 }
                               `}
                               data-nav={item.label.toLowerCase()}
@@ -237,9 +247,10 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                             className={`
                               flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
                               transition-colors duration-200
-                              ${isActive('/admin/dashboard')
-                                ? 'bg-red-600 text-white'
-                                : 'text-red-300 hover:bg-red-600/20 hover:text-red-200'
+                              ${
+                                isActive("/admin/dashboard")
+                                  ? "bg-red-600 text-white"
+                                  : "text-red-300 hover:bg-red-600/20 hover:text-red-200"
                               }
                             `}
                             data-nav="admin"
@@ -265,9 +276,10 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                             className={`
                               flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
                               transition-colors duration-200
-                              ${isActive(item.href) 
-                                ? 'bg-white text-black' 
-                                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                              ${
+                                isActive(item.href)
+                                  ? "bg-white text-black"
+                                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
                               }
                             `}
                             data-nav={item.label.toLowerCase()}
@@ -314,7 +326,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
         )}
 
         {/* Main content */}
-        <main className={`flex-1 ${showSidebar ? 'lg:ml-0' : ''}`}>
+        <main className={`flex-1 ${showSidebar ? "lg:ml-0" : ""}`}>
           {children}
         </main>
       </div>

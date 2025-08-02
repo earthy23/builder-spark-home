@@ -7,7 +7,11 @@ interface PlaceholderPageProps {
   showSidebar?: boolean;
 }
 
-export default function PlaceholderPage({ title, description, showSidebar = true }: PlaceholderPageProps) {
+export default function PlaceholderPage({
+  title,
+  description,
+  showSidebar = true,
+}: PlaceholderPageProps) {
   return (
     <Layout showSidebar={showSidebar}>
       <div className="min-h-screen flex items-center justify-center">
@@ -18,7 +22,8 @@ export default function PlaceholderPage({ title, description, showSidebar = true
           <h1 className="text-2xl font-bold mb-4">{title}</h1>
           <p className="text-gray-400 mb-6">{description}</p>
           <p className="text-sm text-gray-500">
-            This page is under construction. Continue chatting with me to build out this section!
+            This page is under construction. Continue chatting with me to build
+            out this section!
           </p>
         </div>
       </div>

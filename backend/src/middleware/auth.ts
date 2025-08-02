@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { UserRole } from '@prisma/client';
-import { jwtUtils, JwtPayload } from '@/lib/jwt';
-import { prisma } from '@/lib/prisma';
-import { logger } from '@/lib/logger';
+import { Request, Response, NextFunction } from "express";
+import { UserRole } from "@prisma/client";
+import { jwtUtils, JwtPayload } from "@/lib/jwt";
+import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 // Extend Express Request type to include user
 declare global {
@@ -18,15 +18,15 @@ declare global {
 export const authMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res.status(401).json({
-        error: 'Access denied',
-        message: 'No token provided'
+        error: "Access denied",
+        message: "No token provided",
       });
       return;
     }
@@ -35,7 +35,7 @@ export const authMiddleware = async (
 
     try {
       const decoded = jwtUtils.verifyAccessToken(token);
-      
+
       // Verify user still exists and is not banned
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
@@ -45,26 +45,27 @@ export const authMiddleware = async (
           email: true,
           role: true,
           isBanned: true,
-          banExpiresAt: true
-        }
+          banExpiresAt: true,
+        },
       });
 
       if (!user) {
         res.status(401).json({
-          error: 'Access denied',
-          message: 'User not found'
+          error: "Access denied",
+          message: "User not found",
         });
         return;
       }
 
       if (user.isBanned) {
-        const isBanExpired = user.banExpiresAt && user.banExpiresAt < new Date();
-        
+        const isBanExpired =
+          user.banExpiresAt && user.banExpiresAt < new Date();
+
         if (!isBanExpired) {
           res.status(403).json({
-            error: 'Account banned',
-            message: 'Your account has been banned',
-            banExpiresAt: user.banExpiresAt
+            error: "Account banned",
+            message: "Your account has been banned",
+            banExpiresAt: user.banExpiresAt,
           });
           return;
         } else {
@@ -74,8 +75,8 @@ export const authMiddleware = async (
             data: {
               isBanned: false,
               banReason: null,
-              banExpiresAt: null
-            }
+              banExpiresAt: null,
+            },
           });
         }
       }
@@ -83,28 +84,29 @@ export const authMiddleware = async (
       // Add user to request object
       req.user = {
         ...decoded,
-        id: decoded.userId
+        id: decoded.userId,
       };
 
       next();
     } catch (tokenError) {
-      logger.warn('Invalid token attempt:', {
+      logger.warn("Invalid token attempt:", {
         ip: req.ip,
-        userAgent: req.get('User-Agent'),
-        error: tokenError instanceof Error ? tokenError.message : 'Unknown error'
+        userAgent: req.get("User-Agent"),
+        error:
+          tokenError instanceof Error ? tokenError.message : "Unknown error",
       });
 
       res.status(401).json({
-        error: 'Access denied',
-        message: 'Invalid or expired token'
+        error: "Access denied",
+        message: "Invalid or expired token",
       });
       return;
     }
   } catch (error) {
-    logger.error('Auth middleware error:', error);
+    logger.error("Auth middleware error:", error);
     res.status(500).json({
-      error: 'Internal server error',
-      message: 'Authentication failed'
+      error: "Internal server error",
+      message: "Authentication failed",
     });
   }
 };
@@ -114,16 +116,16 @@ export const requireRole = (allowedRoles: UserRole[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({
-        error: 'Access denied',
-        message: 'Authentication required'
+        error: "Access denied",
+        message: "Authentication required",
       });
       return;
     }
 
     if (!allowedRoles.includes(req.user.role)) {
       res.status(403).json({
-        error: 'Access denied',
-        message: 'Insufficient permissions'
+        error: "Access denied",
+        message: "Insufficient permissions",
       });
       return;
     }
@@ -133,24 +135,24 @@ export const requireRole = (allowedRoles: UserRole[]) => {
 };
 
 // Admin access middleware
-export const requireAdmin = requireRole(['ADMIN']);
+export const requireAdmin = requireRole(["ADMIN"]);
 
 // Moderator or Admin access middleware
-export const requireModerator = requireRole(['MOD', 'ADMIN']);
+export const requireModerator = requireRole(["MOD", "ADMIN"]);
 
 // VIP or higher access middleware
-export const requireVIP = requireRole(['VIP', 'VIP_PLUS', 'MOD', 'ADMIN']);
+export const requireVIP = requireRole(["VIP", "VIP_PLUS", "MOD", "ADMIN"]);
 
 // Optional auth middleware (doesn't fail if no token)
 export const optionalAuth = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       next();
       return;
     }
@@ -159,7 +161,7 @@ export const optionalAuth = async (
 
     try {
       const decoded = jwtUtils.verifyAccessToken(token);
-      
+
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
         select: {
@@ -167,24 +169,24 @@ export const optionalAuth = async (
           username: true,
           email: true,
           role: true,
-          isBanned: true
-        }
+          isBanned: true,
+        },
       });
 
       if (user && !user.isBanned) {
         req.user = {
           ...decoded,
-          id: decoded.userId
+          id: decoded.userId,
         };
       }
     } catch (tokenError) {
       // Silently ignore token errors in optional auth
-      logger.debug('Optional auth token error:', tokenError);
+      logger.debug("Optional auth token error:", tokenError);
     }
 
     next();
   } catch (error) {
-    logger.error('Optional auth middleware error:', error);
+    logger.error("Optional auth middleware error:", error);
     next();
   }
 };

@@ -1,19 +1,19 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Shield } from 'lucide-react';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Shield } from "lucide-react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAuth?: boolean;
-  requireRole?: 'member' | 'vip' | 'vip++' | 'mod' | 'admin';
+  requireRole?: "member" | "vip" | "vip++" | "mod" | "admin";
   redirectTo?: string;
 }
 
-export default function ProtectedRoute({ 
-  children, 
-  requireAuth = true, 
+export default function ProtectedRoute({
+  children,
+  requireAuth = true,
   requireRole,
-  redirectTo 
+  redirectTo,
 }: ProtectedRouteProps) {
   const { user, isAuthenticated, loading } = useAuth();
   const location = useLocation();
@@ -31,17 +31,23 @@ export default function ProtectedRoute({
 
   // Check authentication requirement
   if (requireAuth && !isAuthenticated) {
-    return <Navigate to={redirectTo || "/auth/login"} state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to={redirectTo || "/auth/login"}
+        state={{ from: location }}
+        replace
+      />
+    );
   }
 
   // Check role requirement
   if (requireRole && user) {
     const roleHierarchy = {
-      'member': 0,
-      'vip': 1,
-      'vip++': 2,
-      'mod': 3,
-      'admin': 4
+      member: 0,
+      vip: 1,
+      "vip++": 2,
+      mod: 3,
+      admin: 4,
     };
 
     const userLevel = roleHierarchy[user.role];
@@ -91,10 +97,10 @@ export function VIPRoute({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function AuthenticatedRoute({ children }: { children: React.ReactNode }) {
-  return (
-    <ProtectedRoute requireAuth>
-      {children}
-    </ProtectedRoute>
-  );
+export function AuthenticatedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <ProtectedRoute requireAuth>{children}</ProtectedRoute>;
 }

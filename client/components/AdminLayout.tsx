@@ -1,18 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
-import { 
+import {
   Home,
-  Users, 
-  MessageCircle, 
-  LifeBuoy, 
-  Globe, 
-  BarChart3, 
-  Webhook, 
+  Users,
+  MessageCircle,
+  LifeBuoy,
+  Globe,
+  BarChart3,
+  Webhook,
   UserPlus,
   Layout as LayoutIcon,
   FileText,
   Flag,
   Shield,
-  Settings
+  Settings,
 } from "lucide-react";
 import Layout from "./Layout";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,7 +24,11 @@ interface AdminLayoutProps {
 const adminNavItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: Home },
   { href: "/admin/users", label: "User Management", icon: Users },
-  { href: "/admin/chat-moderation", label: "Chat Moderation", icon: MessageCircle },
+  {
+    href: "/admin/chat-moderation",
+    label: "Chat Moderation",
+    icon: MessageCircle,
+  },
   { href: "/admin/tickets", label: "Support Tickets", icon: LifeBuoy },
   { href: "/admin/domains", label: "Domain Manager", icon: Globe },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
@@ -51,7 +55,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="text-center">
             <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
-            <p className="text-gray-400 mb-6">You need administrator privileges to access this area.</p>
+            <p className="text-gray-400 mb-6">
+              You need administrator privileges to access this area.
+            </p>
             <Link to="/dashboard" className="button-primary px-6 py-3">
               Return to Dashboard
             </Link>
@@ -64,49 +70,48 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <Layout showSidebar={false}>
       <div className="min-h-screen flex">
-          {/* Admin Sidebar - Fixed with higher z-index */}
-          <div className="w-72 bg-red-950/20 border-r border-red-800/30 h-screen fixed left-0 top-16 z-[60] backdrop-blur-md">
-            <div className="p-6 border-b border-red-800/30">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-red-400">Admin Panel</h2>
-                  <p className="text-sm text-red-300/70">System Administration</p>
-                </div>
+        {/* Admin Sidebar - Fixed with higher z-index */}
+        <div className="w-72 bg-red-950/20 border-r border-red-800/30 h-screen fixed left-0 top-16 z-[60] backdrop-blur-md">
+          <div className="p-6 border-b border-red-800/30">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-red-400">Admin Panel</h2>
+                <p className="text-sm text-red-300/70">System Administration</p>
               </div>
             </div>
+          </div>
 
-            <nav className="p-4 h-[calc(100vh-200px)] overflow-y-auto">
-              <ul className="space-y-2">
-                {adminNavItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      to={item.href}
-                      className={`
+          <nav className="p-4 h-[calc(100vh-200px)] overflow-y-auto">
+            <ul className="space-y-2">
+              {adminNavItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    to={item.href}
+                    className={`
                         flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
                         transition-all duration-200
-                        ${isActive(item.href)
-                          ? 'bg-red-600 text-white shadow-lg'
-                          : 'text-red-200 hover:bg-red-600/20 hover:text-red-100'
+                        ${
+                          isActive(item.href)
+                            ? "bg-red-600 text-white shadow-lg"
+                            : "text-red-200 hover:bg-red-600/20 hover:text-red-100"
                         }
                       `}
-                      data-admin-nav={item.label.toLowerCase().replace(' ', '-')}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+                    data-admin-nav={item.label.toLowerCase().replace(" ", "-")}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
 
-          {/* Admin Content - Offset by sidebar width with independent scrolling */}
-          <div className="flex-1 ml-72 min-h-screen">
-            {children}
-          </div>
+        {/* Admin Content - Offset by sidebar width with independent scrolling */}
+        <div className="flex-1 ml-72 min-h-screen">{children}</div>
       </div>
     </Layout>
   );

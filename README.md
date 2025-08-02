@@ -5,6 +5,7 @@ A modern, full-featured Eaglercraft HTML5 gaming platform with authentication, s
 ## 🎮 Features
 
 ### **Frontend (React + TypeScript)**
+
 - ✅ **Modern UI/UX** - Black & white theme with Minecraft landscape background
 - ✅ **Authentication System** - Login, register, role-based access
 - ✅ **Game Launcher** - Multiple Eaglercraft clients with quick launch
@@ -13,6 +14,7 @@ A modern, full-featured Eaglercraft HTML5 gaming platform with authentication, s
 - ✅ **Responsive Design** - Works on desktop, tablet, and mobile
 
 ### **Backend (Node.js + TypeScript)**
+
 - ✅ **RESTful API** - Complete authentication and user management
 - ✅ **Real-time Chat** - Socket.io for instant messaging
 - ✅ **PostgreSQL Database** - Prisma ORM with full schema
@@ -24,12 +26,14 @@ A modern, full-featured Eaglercraft HTML5 gaming platform with authentication, s
 ## 🚀 Quick Start
 
 ### **Prerequisites**
-- Node.js 18+ 
+
+- Node.js 18+
 - PostgreSQL 14+
 - Redis 6+
 - npm or yarn
 
 ### **1. Clone & Install**
+
 ```bash
 git clone <repository-url>
 cd uec-launcher
@@ -45,12 +49,14 @@ npm install
 ### **2. Environment Setup**
 
 **Frontend (.env):**
+
 ```bash
 VITE_API_URL=http://localhost:5000/api
 VITE_SOCKET_URL=http://localhost:5000
 ```
 
 **Backend (.env):**
+
 ```bash
 # Copy from backend/.env.example and configure
 cp .env.example .env
@@ -63,6 +69,7 @@ REDIS_URL="redis://localhost:6379"
 ```
 
 ### **3. Database Setup**
+
 ```bash
 cd backend
 
@@ -79,29 +86,33 @@ npm run db:seed
 ### **4. Start Development**
 
 **Terminal 1 - Backend:**
+
 ```bash
 cd backend
 npm run dev
 ```
 
 **Terminal 2 - Frontend:**
+
 ```bash
 npm run dev
 ```
 
 **Access the application:**
+
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 - Admin Panel: http://localhost:3000/admin
 
 ### **5. Default Login Credentials**
+
 ```
 Admin Account:
 - Username: admin
 - Password: admin123
 
 Demo User:
-- Username: steve_builder  
+- Username: steve_builder
 - Password: demo123
 ```
 
@@ -139,6 +150,7 @@ uec-launcher/
 ## 🗄️ Database Schema
 
 ### **Core Tables**
+
 - **users** - User accounts, profiles, roles
 - **friendships** - Friend relationships
 - **friend_requests** - Pending friend requests
@@ -151,15 +163,17 @@ uec-launcher/
 - **user_analytics** - Usage statistics
 
 ### **User Roles**
+
 - **MEMBER** - Default user role
 - **VIP** - Premium member
-- **VIP_PLUS** - Premium+ member  
+- **VIP_PLUS** - Premium+ member
 - **MOD** - Moderator
 - **ADMIN** - Administrator
 
 ## 🔧 API Endpoints
 
 ### **Authentication**
+
 ```
 POST /api/auth/register      # User registration
 POST /api/auth/login         # User login
@@ -169,6 +183,7 @@ GET  /api/auth/me           # Get current user
 ```
 
 ### **User Management**
+
 ```
 GET    /api/users/profile/:id    # Get user profile
 PUT    /api/users/profile        # Update profile
@@ -177,6 +192,7 @@ POST   /api/users/avatar         # Upload avatar
 ```
 
 ### **Friends System**
+
 ```
 GET    /api/friends              # Get friends list
 POST   /api/friends/request      # Send friend request
@@ -185,6 +201,7 @@ DELETE /api/friends/:id          # Remove friend
 ```
 
 ### **Chat System**
+
 ```
 GET    /api/chat/conversations   # Get conversations
 POST   /api/chat/message         # Send message
@@ -192,6 +209,7 @@ GET    /api/chat/history/:id     # Get chat history
 ```
 
 ### **Game Management**
+
 ```
 GET    /api/games/clients        # Get available clients
 POST   /api/games/session        # Start game session
@@ -199,6 +217,7 @@ PUT    /api/games/session/:id    # End game session
 ```
 
 ### **Admin Panel**
+
 ```
 GET    /api/admin/users          # Manage users
 POST   /api/admin/ban            # Ban user
@@ -209,7 +228,9 @@ GET    /api/admin/tickets        # Support tickets
 ## 🌐 Production Deployment
 
 ### **Environment Variables**
+
 Set these in production:
+
 ```bash
 NODE_ENV=production
 DATABASE_URL=<production-postgres-url>
@@ -221,12 +242,14 @@ CORS_ORIGIN=<your-domain>
 ### **Build & Deploy**
 
 **Frontend:**
+
 ```bash
 npm run build
 # Deploy dist/ folder to your hosting service
 ```
 
 **Backend:**
+
 ```bash
 cd backend
 npm run build
@@ -237,17 +260,20 @@ npm start
 ### **Deployment Options**
 
 **Frontend:**
+
 - **Netlify** - Connect Netlify MCP for automatic deployment
 - **Vercel** - Connect Vercel MCP for seamless hosting
 - **Static hosting** - Any CDN/static host (AWS S3, Cloudflare Pages)
 
 **Backend:**
+
 - **Railway** - Easy Node.js hosting with database
 - **Heroku** - Classic PaaS with add-ons
 - **AWS/GCP/Azure** - Cloud platforms with managed services
 - **VPS** - Any Linux server with PM2
 
 **Database:**
+
 - **Neon** - Serverless PostgreSQL (connect Neon MCP)
 - **Supabase** - PostgreSQL with auth (connect Supabase MCP)
 - **PlanetScale** - MySQL-compatible serverless
@@ -258,30 +284,34 @@ npm start
 The frontend is **fully prepared** for backend integration:
 
 ### **Authentication Context**
+
 ```typescript
 // Already implemented in client/contexts/AuthContext.tsx
 const { user, login, logout, loading } = useAuth();
 ```
 
 ### **API Layer**
+
 ```typescript
 // Update client/lib/api.ts with your backend URL
-const API_BASE = process.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = process.env.VITE_API_URL || "http://localhost:5000/api";
 ```
 
 ### **Socket.io Integration**
+
 ```typescript
 // Real-time chat ready for WebSocket connection
 // Update socket configuration in chat components
 ```
 
 ### **Environment Configuration**
+
 ```bash
 # Frontend .env
 VITE_API_URL=https://your-backend-api.com/api
 VITE_SOCKET_URL=https://your-backend-api.com
 
-# Backend .env  
+# Backend .env
 CORS_ORIGIN=https://your-frontend-domain.com
 DATABASE_URL=postgresql://user:pass@host:5432/dbname
 ```
@@ -289,22 +319,25 @@ DATABASE_URL=postgresql://user:pass@host:5432/dbname
 ## 🛠️ Development
 
 ### **Adding New Features**
+
 1. **Frontend**: Add components in `client/components/`
 2. **Backend**: Add routes in `backend/src/routes/`
 3. **Database**: Update `backend/prisma/schema.prisma`
 4. **Types**: Add TypeScript interfaces
 
 ### **Testing**
+
 ```bash
 # Backend tests
 cd backend
 npm test
 
-# Frontend tests  
+# Frontend tests
 npm test
 ```
 
 ### **Code Quality**
+
 ```bash
 # Linting
 npm run lint
@@ -321,7 +354,7 @@ npm run format
 Connect these integrations through the [MCP Servers button](#open-mcp-popover):
 
 - **Supabase** - Database and authentication
-- **Netlify** - Frontend deployment and hosting  
+- **Netlify** - Frontend deployment and hosting
 - **Vercel** - Full-stack deployment
 - **Neon** - Serverless PostgreSQL database
 - **Linear** - Project management and issue tracking
@@ -331,24 +364,28 @@ Connect these integrations through the [MCP Servers button](#open-mcp-popover):
 ## 🎯 Roadmap
 
 ### **Phase 1: Core Features** ✅
+
 - Authentication system
 - Game launcher interface
 - Basic admin panel
 - Friend system foundation
 
 ### **Phase 2: Backend Integration** ✅
+
 - Complete REST API
 - Real-time chat with Socket.io
 - Database schema and migrations
 - Security and validation
 
 ### **Phase 3: Enhanced Features** 🚧
+
 - Email verification system
 - Advanced moderation tools
 - Voice chat integration
 - Mobile app (React Native)
 
 ### **Phase 4: Scaling** 📋
+
 - Microservices architecture
 - Kubernetes deployment
 - CDN integration

@@ -10,26 +10,26 @@ export default function QuickActions() {
       icon: MessageCircle,
       label: "New Chat",
       href: "/chat",
-      color: "bg-blue-600 hover:bg-blue-700"
+      color: "bg-blue-600 hover:bg-blue-700",
     },
     {
       icon: UserPlus,
       label: "Add Friend",
       href: "/friends/requests",
-      color: "bg-green-600 hover:bg-green-700"
+      color: "bg-green-600 hover:bg-green-700",
     },
     {
       icon: Users,
       label: "Create Group",
       href: "/chat/create-group",
-      color: "bg-purple-600 hover:bg-purple-700"
+      color: "bg-purple-600 hover:bg-purple-700",
     },
     {
       icon: Phone,
       label: "Start Call",
       href: "/friends",
-      color: "bg-orange-600 hover:bg-orange-700"
-    }
+      color: "bg-orange-600 hover:bg-orange-700",
+    },
   ];
 
   return (
@@ -48,10 +48,12 @@ export default function QuickActions() {
               `}
               style={{ animationDelay: `${index * 50}ms` }}
               onClick={() => setIsOpen(false)}
-              data-quick-action={action.label.toLowerCase().replace(' ', '-')}
+              data-quick-action={action.label.toLowerCase().replace(" ", "-")}
             >
               <action.icon className="w-5 h-5" />
-              <span className="font-medium whitespace-nowrap">{action.label}</span>
+              <span className="font-medium whitespace-nowrap">
+                {action.label}
+              </span>
             </Link>
           ))}
         </div>
@@ -63,9 +65,10 @@ export default function QuickActions() {
         className={`
           w-14 h-14 rounded-full shadow-lg transition-all duration-300 
           flex items-center justify-center group
-          ${isOpen 
-            ? 'bg-red-600 hover:bg-red-700 rotate-45' 
-            : 'bg-uec-accent hover:bg-yellow-600 hover:scale-110'
+          ${
+            isOpen
+              ? "bg-red-600 hover:bg-red-700 rotate-45"
+              : "bg-uec-accent hover:bg-yellow-600 hover:scale-110"
           }
         `}
         data-action="toggle-quick-actions"
@@ -79,7 +82,7 @@ export default function QuickActions() {
 
       {/* Backdrop for mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 -z-10 bg-black/20 lg:hidden"
           onClick={() => setIsOpen(false)}
         />

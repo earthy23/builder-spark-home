@@ -1,45 +1,45 @@
-import { createClient } from 'redis';
-import { logger } from './logger';
+import { createClient } from "redis";
+import { logger } from "./logger";
 
-const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 
 export const redisClient = createClient({
   url: redisUrl,
   retry_strategy: (options) => {
-    if (options.error && options.error.code === 'ECONNREFUSED') {
-      logger.error('Redis server refused connection');
-      return new Error('Redis server refused connection');
+    if (options.error && options.error.code === "ECONNREFUSED") {
+      logger.error("Redis server refused connection");
+      return new Error("Redis server refused connection");
     }
     if (options.total_retry_time > 1000 * 60 * 60) {
-      logger.error('Redis retry time exhausted');
-      return new Error('Retry time exhausted');
+      logger.error("Redis retry time exhausted");
+      return new Error("Retry time exhausted");
     }
     if (options.attempt > 10) {
-      logger.error('Redis max retry attempts reached');
+      logger.error("Redis max retry attempts reached");
       return undefined;
     }
     return Math.min(options.attempt * 100, 3000);
-  }
+  },
 });
 
-redisClient.on('error', (err) => {
-  logger.error('Redis client error:', err);
+redisClient.on("error", (err) => {
+  logger.error("Redis client error:", err);
 });
 
-redisClient.on('connect', () => {
-  logger.info('Redis client connected');
+redisClient.on("connect", () => {
+  logger.info("Redis client connected");
 });
 
-redisClient.on('reconnecting', () => {
-  logger.info('Redis client reconnecting');
+redisClient.on("reconnecting", () => {
+  logger.info("Redis client reconnecting");
 });
 
-redisClient.on('ready', () => {
-  logger.info('Redis client ready');
+redisClient.on("ready", () => {
+  logger.info("Redis client ready");
 });
 
-redisClient.on('end', () => {
-  logger.info('Redis client connection ended');
+redisClient.on("end", () => {
+  logger.info("Redis client connection ended");
 });
 
 // Connect to Redis
@@ -47,7 +47,7 @@ redisClient.on('end', () => {
   try {
     await redisClient.connect();
   } catch (error) {
-    logger.error('Failed to connect to Redis:', error);
+    logger.error("Failed to connect to Redis:", error);
   }
 })();
 
@@ -116,7 +116,7 @@ export const redisHelpers = {
   // Set expiration
   expire: async (key: string, seconds: number) => {
     return await redisClient.expire(key, seconds);
-  }
+  },
 };
 
 export default redisClient;

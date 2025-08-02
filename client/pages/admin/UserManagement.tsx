@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { 
-  Users, 
-  Search, 
-  Filter, 
-  Ban, 
-  UserCheck, 
-  Crown, 
-  Settings, 
-  Eye, 
+import {
+  Users,
+  Search,
+  Filter,
+  Ban,
+  UserCheck,
+  Crown,
+  Settings,
+  Eye,
   Mail,
   Calendar,
   Shield,
@@ -17,7 +17,7 @@ import {
   Clock,
   MoreVertical,
   Edit,
-  Key
+  Key,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 
@@ -26,8 +26,8 @@ interface User {
   username: string;
   displayName: string;
   email: string;
-  rank: 'member' | 'vip' | 'vip++' | 'mod' | 'admin';
-  status: 'active' | 'banned' | 'suspended' | 'warned';
+  rank: "member" | "vip" | "vip++" | "mod" | "admin";
+  status: "active" | "banned" | "suspended" | "warned";
   joinDate: string;
   lastSeen: string;
   totalMessages: number;
@@ -62,7 +62,7 @@ const mockUsers: User[] = [
     reports: 0,
     currentGame: "Eaglercraft 1.8.8 + OptiFine",
     ipAddress: "192.168.1.100",
-    flags: []
+    flags: [],
   },
   {
     id: "2",
@@ -77,7 +77,7 @@ const mockUsers: User[] = [
     reports: 1,
     currentGame: "Vanilla Eaglercraft",
     ipAddress: "192.168.1.101",
-    flags: ["trusted"]
+    flags: ["trusted"],
   },
   {
     id: "3",
@@ -91,7 +91,7 @@ const mockUsers: User[] = [
     totalMessages: 89,
     reports: 5,
     ipAddress: "192.168.1.102",
-    flags: ["multiple_reports", "harassment"]
+    flags: ["multiple_reports", "harassment"],
   },
   {
     id: "4",
@@ -105,8 +105,8 @@ const mockUsers: User[] = [
     totalMessages: 23,
     reports: 0,
     ipAddress: "192.168.1.103",
-    flags: ["new_account"]
-  }
+    flags: ["new_account"],
+  },
 ];
 
 const mockBans: BanAction[] = [
@@ -117,8 +117,8 @@ const mockBans: BanAction[] = [
     reason: "Repeated harassment and toxic behavior",
     duration: "7 days",
     timestamp: "2024-01-15T10:00:00Z",
-    active: true
-  }
+    active: true,
+  },
 ];
 
 export default function UserManagement() {
@@ -135,7 +135,7 @@ export default function UserManagement() {
     // Simulate loading user data
     const loadUsers = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setUsers(mockUsers);
       setBans(mockBans);
       setLoading(false);
@@ -146,31 +146,46 @@ export default function UserManagement() {
 
   const getRankColor = (rank: string) => {
     switch (rank) {
-      case 'admin': return 'text-red-400 bg-red-500/10';
-      case 'mod': return 'text-blue-400 bg-blue-500/10';
-      case 'vip++': return 'text-purple-400 bg-purple-500/10';
-      case 'vip': return 'text-yellow-400 bg-yellow-500/10';
-      default: return 'text-gray-400 bg-gray-500/10';
+      case "admin":
+        return "text-red-400 bg-red-500/10";
+      case "mod":
+        return "text-blue-400 bg-blue-500/10";
+      case "vip++":
+        return "text-purple-400 bg-purple-500/10";
+      case "vip":
+        return "text-yellow-400 bg-yellow-500/10";
+      default:
+        return "text-gray-400 bg-gray-500/10";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'text-green-400 bg-green-500/10';
-      case 'banned': return 'text-red-400 bg-red-500/10';
-      case 'suspended': return 'text-orange-400 bg-orange-500/10';
-      case 'warned': return 'text-yellow-400 bg-yellow-500/10';
-      default: return 'text-gray-400 bg-gray-500/10';
+      case "active":
+        return "text-green-400 bg-green-500/10";
+      case "banned":
+        return "text-red-400 bg-red-500/10";
+      case "suspended":
+        return "text-orange-400 bg-orange-500/10";
+      case "warned":
+        return "text-yellow-400 bg-yellow-500/10";
+      default:
+        return "text-gray-400 bg-gray-500/10";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'active': return <CheckCircle className="w-4 h-4" />;
-      case 'banned': return <XCircle className="w-4 h-4" />;
-      case 'suspended': return <Clock className="w-4 h-4" />;
-      case 'warned': return <AlertTriangle className="w-4 h-4" />;
-      default: return <Shield className="w-4 h-4" />;
+      case "active":
+        return <CheckCircle className="w-4 h-4" />;
+      case "banned":
+        return <XCircle className="w-4 h-4" />;
+      case "suspended":
+        return <Clock className="w-4 h-4" />;
+      case "warned":
+        return <AlertTriangle className="w-4 h-4" />;
+      default:
+        return <Shield className="w-4 h-4" />;
     }
   };
 
@@ -185,38 +200,43 @@ export default function UserManagement() {
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffHours / 24);
 
-    if (diffHours < 1) return 'Just now';
+    if (diffHours < 1) return "Just now";
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
     return date.toLocaleDateString();
   };
 
-  const handleUserAction = (userId: string, action: 'ban' | 'warn' | 'promote' | 'demote' | 'unban') => {
-    setUsers(prev => 
-      prev.map(user => {
+  const handleUserAction = (
+    userId: string,
+    action: "ban" | "warn" | "promote" | "demote" | "unban",
+  ) => {
+    setUsers((prev) =>
+      prev.map((user) => {
         if (user.id === userId) {
           switch (action) {
-            case 'ban':
-              return { ...user, status: 'banned' as const };
-            case 'warn':
-              return { ...user, status: 'warned' as const };
-            case 'unban':
-              return { ...user, status: 'active' as const };
+            case "ban":
+              return { ...user, status: "banned" as const };
+            case "warn":
+              return { ...user, status: "warned" as const };
+            case "unban":
+              return { ...user, status: "active" as const };
             default:
               return user;
           }
         }
         return user;
-      })
+      }),
     );
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
-    const matchesRank = rankFilter === 'all' || user.rank === rankFilter;
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || user.status === statusFilter;
+    const matchesRank = rankFilter === "all" || user.rank === rankFilter;
     return matchesSearch && matchesStatus && matchesRank;
   });
 
@@ -245,9 +265,11 @@ export default function UserManagement() {
                   <Users className="w-6 h-6 text-blue-400" />
                   User Management
                 </h1>
-                <p className="text-gray-400 text-sm">Manage user accounts, roles, and permissions</p>
+                <p className="text-gray-400 text-sm">
+                  Manage user accounts, roles, and permissions
+                </p>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -260,8 +282,8 @@ export default function UserManagement() {
                     data-search="users"
                   />
                 </div>
-                
-                <select 
+
+                <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white/20"
@@ -274,7 +296,7 @@ export default function UserManagement() {
                   <option value="warned">Warned</option>
                 </select>
 
-                <select 
+                <select
                   value={rankFilter}
                   onChange={(e) => setRankFilter(e.target.value)}
                   className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white/20"
@@ -299,7 +321,9 @@ export default function UserManagement() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-400">Total Users</p>
-                  <p className="text-2xl font-bold text-blue-400">{users.length}</p>
+                  <p className="text-2xl font-bold text-blue-400">
+                    {users.length}
+                  </p>
                 </div>
                 <Users className="w-8 h-8 text-blue-400" />
               </div>
@@ -310,7 +334,7 @@ export default function UserManagement() {
                 <div>
                   <p className="text-sm text-gray-400">Active Users</p>
                   <p className="text-2xl font-bold text-green-400">
-                    {users.filter(u => u.status === 'active').length}
+                    {users.filter((u) => u.status === "active").length}
                   </p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-green-400" />
@@ -322,7 +346,7 @@ export default function UserManagement() {
                 <div>
                   <p className="text-sm text-gray-400">Banned Users</p>
                   <p className="text-2xl font-bold text-red-400">
-                    {users.filter(u => u.status === 'banned').length}
+                    {users.filter((u) => u.status === "banned").length}
                   </p>
                 </div>
                 <Ban className="w-8 h-8 text-red-400" />
@@ -350,24 +374,34 @@ export default function UserManagement() {
                 {filteredUsers.length} users found
               </span>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-800 border-b border-gray-700">
                   <tr>
                     <th className="text-left py-3 px-4 font-semibold">User</th>
                     <th className="text-left py-3 px-4 font-semibold">Rank</th>
-                    <th className="text-left py-3 px-4 font-semibold">Status</th>
-                    <th className="text-left py-3 px-4 font-semibold">Activity</th>
-                    <th className="text-left py-3 px-4 font-semibold">Reports</th>
-                    <th className="text-left py-3 px-4 font-semibold">Joined</th>
-                    <th className="text-right py-3 px-4 font-semibold">Actions</th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Status
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Activity
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Reports
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Joined
+                    </th>
+                    <th className="text-right py-3 px-4 font-semibold">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
-                    <tr 
-                      key={user.id} 
+                    <tr
+                      key={user.id}
                       className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors"
                       data-user={user.id}
                     >
@@ -377,16 +411,20 @@ export default function UserManagement() {
                             <Users className="w-5 h-5 text-gray-400" />
                           </div>
                           <div>
-                            <div className="font-semibold">{user.displayName}</div>
-                            <div className="text-sm text-gray-400">@{user.username}</div>
+                            <div className="font-semibold">
+                              {user.displayName}
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              @{user.username}
+                            </div>
                             {user.flags.length > 0 && (
                               <div className="flex gap-1 mt-1">
-                                {user.flags.map(flag => (
-                                  <span 
-                                    key={flag} 
+                                {user.flags.map((flag) => (
+                                  <span
+                                    key={flag}
                                     className="px-1 py-0.5 text-xs bg-orange-600 rounded"
                                   >
-                                    {flag.replace('_', ' ')}
+                                    {flag.replace("_", " ")}
                                   </span>
                                 ))}
                               </div>
@@ -395,12 +433,16 @@ export default function UserManagement() {
                         </div>
                       </td>
                       <td className="py-4 px-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRankColor(user.rank)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getRankColor(user.rank)}`}
+                        >
                           {user.rank.toUpperCase()}
                         </span>
                       </td>
                       <td className="py-4 px-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit ${getStatusColor(user.status)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit ${getStatusColor(user.status)}`}
+                        >
                           {getStatusIcon(user.status)}
                           {user.status.toUpperCase()}
                         </span>
@@ -408,17 +450,23 @@ export default function UserManagement() {
                       <td className="py-4 px-4">
                         <div className="text-sm">
                           <div>Last seen: {formatLastSeen(user.lastSeen)}</div>
-                          <div className="text-gray-400">{user.totalMessages} messages</div>
+                          <div className="text-gray-400">
+                            {user.totalMessages} messages
+                          </div>
                           {user.currentGame && (
-                            <div className="text-green-400 text-xs">Playing {user.currentGame}</div>
+                            <div className="text-green-400 text-xs">
+                              Playing {user.currentGame}
+                            </div>
                           )}
                         </div>
                       </td>
                       <td className="py-4 px-4">
-                        <span className={`
+                        <span
+                          className={`
                           text-sm font-semibold
-                          ${user.reports > 3 ? 'text-red-400' : user.reports > 0 ? 'text-yellow-400' : 'text-green-400'}
-                        `}>
+                          ${user.reports > 3 ? "text-red-400" : user.reports > 0 ? "text-yellow-400" : "text-green-400"}
+                        `}
+                        >
                           {user.reports}
                         </span>
                       </td>
@@ -427,7 +475,7 @@ export default function UserManagement() {
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2 justify-end">
-                          <button 
+                          <button
                             onClick={() => setSelectedUser(user)}
                             className="p-1 hover:bg-gray-700 rounded transition-colors"
                             data-action="view-user"
@@ -435,25 +483,25 @@ export default function UserManagement() {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button 
+                          <button
                             className="p-1 hover:bg-gray-700 rounded transition-colors"
                             data-action="edit-user"
                             data-user-id={user.id}
                           >
                             <Edit className="w-4 h-4" />
                           </button>
-                          {user.status === 'active' ? (
-                            <button 
-                              onClick={() => handleUserAction(user.id, 'ban')}
+                          {user.status === "active" ? (
+                            <button
+                              onClick={() => handleUserAction(user.id, "ban")}
                               className="p-1 hover:bg-red-700 rounded transition-colors text-red-400"
                               data-action="ban-user"
                               data-user-id={user.id}
                             >
                               <Ban className="w-4 h-4" />
                             </button>
-                          ) : user.status === 'banned' ? (
-                            <button 
-                              onClick={() => handleUserAction(user.id, 'unban')}
+                          ) : user.status === "banned" ? (
+                            <button
+                              onClick={() => handleUserAction(user.id, "unban")}
                               className="p-1 hover:bg-green-700 rounded transition-colors text-green-400"
                               data-action="unban-user"
                               data-user-id={user.id}
@@ -471,14 +519,14 @@ export default function UserManagement() {
                 </tbody>
               </table>
             </div>
-            
+
             {filteredUsers.length === 0 && (
               <div className="text-center py-12">
                 <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No users found</h3>
                 <p className="text-gray-400">
-                  {searchTerm || statusFilter !== 'all' || rankFilter !== 'all' 
-                    ? "No users match your current filters" 
+                  {searchTerm || statusFilter !== "all" || rankFilter !== "all"
+                    ? "No users match your current filters"
                     : "No users registered yet."}
                 </p>
               </div>
@@ -489,23 +537,25 @@ export default function UserManagement() {
           {bans.length > 0 && (
             <div className="card mt-8">
               <h2 className="text-xl font-bold mb-6">Recent Bans</h2>
-              
+
               <div className="space-y-3">
                 {bans.map((ban) => {
-                  const user = users.find(u => u.id === ban.userId);
+                  const user = users.find((u) => u.id === ban.userId);
                   return (
-                    <div 
-                      key={ban.id} 
+                    <div
+                      key={ban.id}
                       className="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg"
                       data-ban={ban.id}
                     >
                       <Ban className="w-5 h-5 text-red-400" />
                       <div className="flex-1">
                         <p className="text-sm font-medium">
-                          {user?.displayName || 'Unknown User'} banned for {ban.duration}
+                          {user?.displayName || "Unknown User"} banned for{" "}
+                          {ban.duration}
                         </p>
                         <p className="text-xs text-gray-400">
-                          Reason: {ban.reason} • by {ban.moderator} • {formatDate(ban.timestamp)}
+                          Reason: {ban.reason} • by {ban.moderator} •{" "}
+                          {formatDate(ban.timestamp)}
                         </p>
                       </div>
                       {ban.active && (

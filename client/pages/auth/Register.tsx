@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, User, Mail, Lock, ArrowRight, UserCheck } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  ArrowRight,
+  UserCheck,
+} from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -9,7 +17,7 @@ export default function Register() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -21,55 +29,57 @@ export default function Register() {
   // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    
+
     if (!formData.username) {
       newErrors.username = "Username is required";
     } else if (formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters";
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username = "Username can only contain letters, numbers, and underscores";
+      newErrors.username =
+        "Username can only contain letters, numbers, and underscores";
     }
-    
+
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "Password must contain uppercase, lowercase, and number";
+      newErrors.password =
+        "Password must contain uppercase, lowercase, and number";
     }
-    
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-    
+
     if (!agreedToTerms) {
       newErrors.terms = "You must agree to the Terms of Service";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -83,21 +93,21 @@ export default function Register() {
       const success = await register({
         username: formData.username,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
       if (success) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         setErrors({
           username: "Username or email already exists",
-          email: "Username or email already exists"
+          email: "Username or email already exists",
         });
       }
     } catch (error) {
       setErrors({
         username: "Registration failed. Please try again.",
-        email: "Registration failed. Please try again."
+        email: "Registration failed. Please try again.",
       });
     }
   };
@@ -108,20 +118,23 @@ export default function Register() {
         <div className="max-w-md w-full mx-4">
           {/* Logo/Header */}
           <div className="text-center mb-8">
-            <img 
-              src="/assets/logo.png" 
-              alt="UEC Launcher" 
+            <img
+              src="/assets/logo.png"
+              alt="UEC Launcher"
               className="w-16 h-16 mx-auto mb-4"
               onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                const fallback = document.createElement('div');
-                fallback.className = 'w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center text-black text-xl font-bold';
-                fallback.textContent = 'UEC';
+                e.currentTarget.style.display = "none";
+                const fallback = document.createElement("div");
+                fallback.className =
+                  "w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center text-black text-xl font-bold";
+                fallback.textContent = "UEC";
                 e.currentTarget.parentElement!.appendChild(fallback);
               }}
             />
             <h1 className="text-3xl font-bold mb-2">Join UEC Launcher</h1>
-            <p className="text-gray-400">Create your account and start playing today</p>
+            <p className="text-gray-400">
+              Create your account and start playing today
+            </p>
           </div>
 
           {/* Register Form */}
@@ -129,7 +142,10 @@ export default function Register() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username Field */}
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Username
                 </label>
                 <div className="relative">
@@ -142,7 +158,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-4 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.username ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.username ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Choose a username"
                     data-input="username"
@@ -155,7 +171,10 @@ export default function Register() {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -168,7 +187,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-4 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.email ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.email ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Enter your email"
                     data-input="email"
@@ -181,7 +200,10 @@ export default function Register() {
 
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -194,7 +216,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-12 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.password ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.password ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Create a strong password"
                     data-input="password"
@@ -205,7 +227,11 @@ export default function Register() {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     data-action="toggle-password"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
@@ -215,7 +241,10 @@ export default function Register() {
 
               {/* Confirm Password Field */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -228,7 +257,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-12 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.confirmPassword ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.confirmPassword ? "border-red-500" : "border-gray-700"}
                     `}
                     placeholder="Confirm your password"
                     data-input="confirmPassword"
@@ -239,11 +268,17 @@ export default function Register() {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     data-action="toggle-confirm-password"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-red-400 text-sm mt-2">{errors.confirmPassword}</p>
+                  <p className="text-red-400 text-sm mt-2">
+                    {errors.confirmPassword}
+                  </p>
                 )}
               </div>
 
@@ -259,13 +294,22 @@ export default function Register() {
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-700 rounded bg-gray-800 mt-1"
                     data-input="terms"
                   />
-                  <label htmlFor="terms" className="ml-3 block text-sm text-gray-300">
+                  <label
+                    htmlFor="terms"
+                    className="ml-3 block text-sm text-gray-300"
+                  >
                     I agree to the{" "}
-                    <Link to="/terms" className="text-blue-400 hover:text-blue-300 transition-colors">
+                    <Link
+                      to="/terms"
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                    >
                       Terms of Service
                     </Link>{" "}
                     and{" "}
-                    <Link to="/privacy" className="text-blue-400 hover:text-blue-300 transition-colors">
+                    <Link
+                      to="/privacy"
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                    >
                       Privacy Policy
                     </Link>
                   </label>
@@ -302,7 +346,9 @@ export default function Register() {
                 <div className="w-full border-t border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-900 text-gray-400">Already have an account?</span>
+                <span className="px-2 bg-gray-900 text-gray-400">
+                  Already have an account?
+                </span>
               </div>
             </div>
 
@@ -319,8 +365,8 @@ export default function Register() {
 
           {/* Back to Home */}
           <div className="text-center mt-6">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-sm text-gray-400 hover:text-white transition-colors"
             >
               ← Back to home
