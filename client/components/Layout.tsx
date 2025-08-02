@@ -21,6 +21,7 @@ import {
   Search
 } from "lucide-react";
 import { useState } from "react";
+import NotificationCenter from "./NotificationCenter";
 
 interface LayoutProps {
   children: React.ReactNode;
