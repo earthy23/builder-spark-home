@@ -17,7 +17,7 @@ import {
   MoreVertical,
   ArrowRight
 } from "lucide-react";
-import Layout from "@/components/Layout";
+import AdminLayout from "@/components/AdminLayout";
 
 interface Ticket {
   id: string;
@@ -260,19 +260,19 @@ export default function TicketManagement() {
 
   if (loading) {
     return (
-      <Layout>
+      <AdminLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin w-12 h-12 border-2 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
             <p className="text-gray-300 text-lg">Loading support tickets...</p>
           </div>
         </div>
-      </Layout>
+      </AdminLayout>
     );
   }
 
   return (
-    <Layout>
+    <AdminLayout>
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
         <div className="flex h-[calc(100vh-4rem)]">
           {/* Tickets Sidebar */}
@@ -528,6 +528,6 @@ export default function TicketManagement() {
           </div>
         </div>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 }
