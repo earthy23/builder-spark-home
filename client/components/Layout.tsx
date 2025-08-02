@@ -159,8 +159,8 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
             
             {/* Sidebar */}
             <aside className={`
-              fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gray-900/95 backdrop-blur-md
-              transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+              fixed lg:static inset-y-0 left-0 z-40 w-64 bg-gray-900/95 backdrop-blur-md
+              transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
               lg:translate-x-0 transition-transform duration-200 ease-in-out
               border-r border-gray-800 pt-16 lg:pt-0
             `}>
