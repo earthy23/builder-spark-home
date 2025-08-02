@@ -53,7 +53,11 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [isLoggedIn] = useState(true); // Simulating logged-in state for demo
+  // Check if user is on a protected route to determine auth state
+  const isAuthRoute = location.pathname.startsWith('/auth');
+  const isPublicRoute = location.pathname === '/' || location.pathname.startsWith('/about') ||
+                       location.pathname.startsWith('/terms') || location.pathname.startsWith('/privacy');
+  const [isLoggedIn] = useState(!isAuthRoute && !isPublicRoute); // Only logged in for protected routes
 
   const isActive = (href: string) => location.pathname === href;
 
