@@ -295,6 +295,12 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
           {children}
         </main>
       </div>
+
+      {/* Notification Center */}
+      <NotificationCenter
+        isOpen={notificationsOpen}
+        onClose={() => setNotificationsOpen(false)}
+      />
     </div>
   );
 }
