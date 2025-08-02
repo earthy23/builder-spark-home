@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import NotificationCenter from "./NotificationCenter";
-import QuickActions from "./QuickActions";
 
 interface LayoutProps {
   children: React.ReactNode;
