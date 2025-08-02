@@ -87,29 +87,29 @@ export default function Login() {
           {/* Login Form */}
           <div className="card">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email Field */}
+              {/* Username/Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                  Email Address
+                <label htmlFor="usernameOrEmail" className="block text-sm font-medium text-gray-300 mb-2">
+                  Username or Email
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    id="usernameOrEmail"
+                    name="usernameOrEmail"
+                    value={formData.usernameOrEmail}
                     onChange={handleInputChange}
                     className={`
                       w-full pl-12 pr-4 py-3 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-                      ${errors.email ? 'border-red-500' : 'border-gray-700'}
+                      ${errors.usernameOrEmail ? 'border-red-500' : 'border-gray-700'}
                     `}
-                    placeholder="Enter your email"
-                    data-input="email"
+                    placeholder="Enter your username or email"
+                    data-input="usernameOrEmail"
                   />
                 </div>
-                {errors.email && (
-                  <p className="text-red-400 text-sm mt-2">{errors.email}</p>
+                {errors.usernameOrEmail && (
+                  <p className="text-red-400 text-sm mt-2">{errors.usernameOrEmail}</p>
                 )}
               </div>
 
