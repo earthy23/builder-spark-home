@@ -16,7 +16,7 @@ import {
   ExternalLink,
   MoreVertical
 } from "lucide-react";
-import Layout from "@/components/Layout";
+import AdminLayout from "@/components/AdminLayout";
 
 interface FlaggedMessage {
   id: string;
@@ -235,19 +235,19 @@ export default function ChatModeration() {
 
   if (loading) {
     return (
-      <Layout>
+      <AdminLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin w-12 h-12 border-2 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
             <p className="text-gray-300 text-lg">Loading moderation queue...</p>
           </div>
         </div>
-      </Layout>
+      </AdminLayout>
     );
   }
 
   return (
-    <Layout>
+    <AdminLayout>
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
         {/* Header */}
         <div className="sticky top-16 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800">
@@ -504,6 +504,6 @@ export default function ChatModeration() {
           </div>
         </div>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 }
