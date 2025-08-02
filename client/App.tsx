@@ -71,6 +71,10 @@ const App = () => (
           <Route path="/chat/group/:id" element={<Chat />} />
           <Route path="/chat/create-group" element={<PlaceholderPage title="Create Group" description="Create a new group chat with friends." />} />
 
+          {/* Direct Messages */}
+          <Route path="/messages" element={<DirectMessages />} />
+          <Route path="/messages/:id" element={<DirectMessages />} />
+
           {/* Admin Panel */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UserManagement />} />
