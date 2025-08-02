@@ -95,7 +95,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <>
                 <button
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
